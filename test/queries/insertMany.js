@@ -31,7 +31,7 @@ describe("Insert an Array of Entities", () => {
         spy.payload = []
         return {
           insertMany: (op) => {
-            op.map((p, index) => spy.payload[index] = p);
+            op.map((p, index) => spy.payload[index] = p)
             return ret
           }
         }
@@ -41,7 +41,7 @@ describe("Insert an Array of Entities", () => {
   it("should insert an array of entities", async () => {
     //given
     let spy = {}
-    let arrEntity = [];
+    let arrEntity = []
 
     const retFromDeb = { 
         ops: [
@@ -65,13 +65,13 @@ describe("Insert an Array of Entities", () => {
     anEntity.numberTest = 100
     anEntity.booleanTest = true
 
-    arrEntity.push(anEntity);
+    arrEntity.push(anEntity)
 
     anotherEntity.id = "60edc25fc39277307ca9a7ed"
     anotherEntity.numberTest = 10
     anotherEntity.booleanTest = false
 
-    arrEntity.push(anotherEntity);
+    arrEntity.push(anotherEntity)
 
     //when
     const ret = await itemRepo.insertMany(arrEntity)
