@@ -38,6 +38,20 @@ module.exports = class Repository {
 
   /**
   *
+  * Create multiple entities
+  *
+  * @param {type}  arrayEntityInstance Array of Entity instance
+  *
+  * @return {type} Current entities
+  */
+   async insertMany(arrayEntityInstance) {
+    const payload = arrayEntityInstance.map((entityInstance) => this.dataMapper.collectionFieldsWithValue(entityInstance))  
+    let { ops } = await this.runner().collection(this.collectionQualifiedName).insertMany(payload)
+    return ops.map((op) => this.dataMapper.toEntity(op)) 
+  }
+
+  /**
+  *
   * Update entity
   *
   * @param {type}   entityInstance Entity instance
