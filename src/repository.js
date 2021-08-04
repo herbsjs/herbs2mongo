@@ -52,6 +52,27 @@ module.exports = class Repository {
 
   /**
   *
+  * Update Many entities
+  *
+  * @param {type}   options object with some properties as filter definition and update definition
+  *
+  * @return {type}  True when success
+  */
+   async updateMany(options = { filter, update }) {
+    const ret = await this
+      .runner()
+      .collection(this.collectionQualifiedName)
+      .updateMany(
+        options.filter, 
+        options.update,
+        { upsert: true }
+      )
+      
+    return ret.modifiedCount === 1
+  }
+
+  /**
+  *
   * Update entity
   *
   * @param {type}   entityInstance Entity instance
