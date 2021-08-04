@@ -1,6 +1,6 @@
 const Convention = require("./convention")
 const DataMapper = require("./dataMapper")
-const { checker } = require('@herbsjs/suma')
+const { checker } = require('@herbsjs/herbs')
 
 const dependency = { convention: Convention }
 
@@ -45,9 +45,9 @@ module.exports = class Repository {
   * @return {type} Current entities
   */
    async insertMany(arrayEntityInstance) {
-    const payload = arrayEntityInstance.map((entityInstance) => this.dataMapper.collectionFieldsWithValue(entityInstance))  
+    const payload = arrayEntityInstance.map((entityInstance) => this.dataMapper.collectionFieldsWithValue(entityInstance))
     let { ops } = await this.runner().collection(this.collectionQualifiedName).insertMany(payload)
-    return ops.map((op) => this.dataMapper.toEntity(op)) 
+    return ops.map((op) => this.dataMapper.toEntity(op))
   }
 
   /**
@@ -63,11 +63,11 @@ module.exports = class Repository {
       .runner()
       .collection(this.collectionQualifiedName)
       .updateMany(
-        options.filter, 
+        options.filter,
         options.update,
         { upsert: true }
       )
-      
+
     return ret.modifiedCount === 1
   }
 
@@ -117,7 +117,6 @@ module.exports = class Repository {
   * @param {type} object.limit Limit items to list
   * @param {type} object.filter Filter items to list
   * @param {type} object.skip Rows that will be skipped from the resultset
-  * @param {type} object.search Where query term
   * @param {type} object.orderBy Order by query
   *
   * @return {type} List of entities
