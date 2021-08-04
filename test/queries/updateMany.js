@@ -49,8 +49,6 @@ describe("Update an multiple Entities", () => {
     })
 
     anEntity.id = 1
-    anEntity.stringTest = "test"
-    anEntity.booleanTest = true
 
     let filterDefinition = {  id: anEntity.id }
     let updateDefinition = { $set: { "stringTest" : "everything works very well" } }
