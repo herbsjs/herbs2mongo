@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/herbsjs/herbs2mongo/compare/v1.0.0...v1.0.1) (2021-08-31)
+
+
+### Bug Fixes
+
+* **repository.js:** change scope of var ([dc35b3c](https://github.com/herbsjs/herbs2mongo/commit/dc35b3c44e9bc842009bd6451685531fc80be440))
+
 # 1.0.0 (2021-08-04)
 
 
