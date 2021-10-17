@@ -37,18 +37,15 @@ module.exports = async () => {
 `itemRepository.js`:
 ```javascript
 const { Repository } = require('@herbsjs/herbs2mongo')
-const connection = require('connection')
 const { Item } = require('../domain/entities/item')
-const database = 'herbs2mongo_testdb'
 
 class ItemRepository extends Repository {
-    constructor() {
+    constructor(mongoConnInstance) {
         super({
             entity: Item,
             collection: 'aCollection',
-            database,
             ids: ['id'],
-            mongodb: await connection()
+            mongodb: mongoConnInstance
         })
     }
 
@@ -86,18 +83,15 @@ The advantage of using Mongo is that is a simple and flexible way to retrieve da
 
 ```javascript
 const { Repository } = require('@herbsjs/herbs2mongo')
-const connection = require('connection')  // Mongo initialize instance
 const { ProductItem } = require('../domain/entities/productItem')
-const database = 'herbs2mongo_testdb'
 
 class YourRepository extends Repository {
-    constructor() {
+    constructor(mongoConnInstance) {
         super({
             entity: ProductItem,
             collection: 'product_items',
-            database,
             ids: ['id'],
-            mongodb: await connection()
+            mongodb: mongoConnInstance
         })
     }
 }
@@ -321,10 +315,10 @@ Retrieving and Persist:
     - [X] order by
     - [X] limit
     - [X] skip
-- [X] find All
-    - [X] order by
-    - [X] limit
-    - [X] skip
+- [ ] find All
+    - [ ] order by
+    - [ ] limit
+    - [ ] skip
 - [X] find with pages
 - [ ] agregations
 - [ ] replace
