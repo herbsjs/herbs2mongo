@@ -31,9 +31,13 @@ module.exports = class Repository {
   async insert(entityInstance) {
     const payload = this.dataMapper.collectionFieldsWithValue(entityInstance)
 
-    let { ops } = await this.runner().collection(this.collectionQualifiedName).insertOne(payload)
+    const ret = await this
+      .runner()
+      .collection(this.collectionQualifiedName)
+      .insertOne(payload)
 
-    return this.dataMapper.toEntity(ops[0])
+    payload._id = ret.insertedId
+    return this.dataMapper.toEntity(payload)
   }
 
   /**

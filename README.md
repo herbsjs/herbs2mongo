@@ -1,5 +1,5 @@
-[![CI build](https://github.com/herbsjs/herbs2mongo/actions/workflows/on_push.yml/badge.svg?branch=master)](https://github.com/herbsjs/herbs2mongo/actions/workflows/on_push.yml)
-[![codecov](https://codecov.io/gh/herbsjs/herbs2mongo/branch/master/graph/badge.svg)](https://codecov.io/gh/herbsjs/herbs2mongo)
+[![CI](https://github.com/herbsjs/herbs2mongo/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/herbsjs/herbs2mongo/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/herbsjs/herbs2mongo/branch/main/graph/badge.svg)](https://codecov.io/gh/herbsjs/herbs2mongo)
 
 # herbs2mongo
 

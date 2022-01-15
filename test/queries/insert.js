@@ -42,7 +42,10 @@ describe("Insert an Entity", () => {
   it("should insert an entity", async () => {
     //given
     let spy = {}
-    const retFromDeb = { ops: [{ _id: ObjectID("60edc25fc39277307ca9a7ff") }] }
+    const retFromDeb = { 
+      insertedId: ObjectID("60edc25fc39277307ca9a7ff"),
+      acknowledged : true
+    }
     const collectionName = "aCollection"
     const anEntity = givenAnEntity()
     const ItemRepository = givenAnRepositoryClass()
@@ -63,6 +66,6 @@ describe("Insert an Entity", () => {
     //then
     assert.deepStrictEqual(ret.id,  "60edc25fc39277307ca9a7ff")
     assert.deepStrictEqual(spy.collectionName, collectionName)
-    assert.deepStrictEqual(spy.payload, { _id: "60edc25fc39277307ca9a7ff", number_test: 100, boolean_test: true })
+    assert.deepStrictEqual(spy.payload, { id: "60edc25fc39277307ca9a7ff", number_test: 100, boolean_test: true })
   })
 })
