@@ -40,7 +40,7 @@ describe('Query Find by ID', () => {
 
     it('should return entities instances instance', async () => {
         //given
-        let spy = {}
+        const spy = {}
         const retFromDeb = { _id: "60edc25fc39277307ca9a7ff", number_test: 100, boolean_test: true, string_test: 'aString' }
 
         const anEntity = givenAnEntity()
@@ -61,4 +61,27 @@ describe('Query Find by ID', () => {
         assert.deepStrictEqual(ret.isValid(),true )
 
     })
+
+    it('should return null', async () => {
+      //given
+      const spy = {}
+      const retFromDeb = null
+
+      const anEntity = givenAnEntity()
+      const ItemRepository = givenAnRepositoryClass()
+      const itemRepo = new ItemRepository({
+          entity: anEntity,
+          collection: 'aCollection',
+          ids: ['id'],
+          mongodb: mongodb(retFromDeb, spy)
+      })
+      anEntity.id = '60edc25fc39277307ca9a7ff'
+
+      //when
+      const ret = await itemRepo.findByID(anEntity.id)
+
+      //then
+      assert.deepStrictEqual(ret, null)
+
+  })
 })

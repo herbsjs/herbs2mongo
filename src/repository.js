@@ -108,8 +108,9 @@ module.exports = class Repository {
 
   async findByID(id) {
 
-    let result = await this.runner().collection(this.collectionQualifiedName).findOne({ _id: String(id)})
-
+    const result = await this.runner().collection(this.collectionQualifiedName).findOne({ _id: String(id)})
+    if(!result) return null
+    
     return this.dataMapper.toEntity(result)
   }
 
@@ -183,6 +184,20 @@ module.exports = class Repository {
     }
 
     return entities
+  }
+
+  /**
+  *
+  * Find all entities
+  *
+  * @param {type} object.limit Limit items to list
+  * @param {type} object.skip Rows that will be skipped from the resultset
+  * @param {type} object.orderBy Order by query
+  *
+  * @return {type} List of all entities
+  */
+  async findAll({ project, skip, limit, sort }){
+    this.find({ project, skip, limit, sort })
   }
 
 
