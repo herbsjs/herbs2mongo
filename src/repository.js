@@ -1,7 +1,7 @@
+const { ObjectId } = require('mongodb')
 const Convention = require("./convention")
 const DataMapper = require("./dataMapper")
 const { checker } = require('@herbsjs/herbs')
-const { ObjectId } = require('mongodb');
 
 const dependency = { convention: Convention }
 
