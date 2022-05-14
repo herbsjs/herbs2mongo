@@ -1,6 +1,7 @@
 const Convention = require("./convention")
 const DataMapper = require("./dataMapper")
 const { checker } = require('@herbsjs/herbs')
+const { ObjectId } = require('mongodb');
 
 const dependency = { convention: Convention }
 
@@ -89,7 +90,7 @@ module.exports = class Repository {
     delete payload._id
 
     const ret = await this.runner().collection(this.collectionQualifiedName)
-      .updateOne({ _id: String(entityInstance._id)},
+      .updateOne({ _id:  new ObjectId(entityInstance._id)},
                  { $set : payload },
                  { upsert: true })
 
@@ -108,7 +109,7 @@ module.exports = class Repository {
 
   async findByID(id) {
 
-    const result = await this.runner().collection(this.collectionQualifiedName).findOne({ _id: String(id)})
+    const result = await this.runner().collection(this.collectionQualifiedName).findOne({ _id:  new ObjectId(id)})
     if(!result) return null
 
     return this.dataMapper.toEntity(result)
@@ -197,7 +198,7 @@ module.exports = class Repository {
    async deleteByID(id) {
 
     const ret = await this.runner().collection(this.collectionQualifiedName)
-      .deleteOne({ _id: String(id)})
+      .deleteOne({ _id:  new ObjectId(id)})
 
     return ret.result.ok === 1
   }
