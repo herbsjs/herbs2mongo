@@ -7,11 +7,10 @@ module.exports = async () => {
   if (dbInstance) {
       return new Promise((resolve) => resolve(dbInstance))
   }
-  const client = await new MongoClient(config.connectionString, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-  }).connect()
+  const client = new MongoClient(config.connectionString)
+  await client.connect()
   dbInstance = client.db(config.databaseName)
   Logger.setLevel("debug")
   return dbInstance
+
 }

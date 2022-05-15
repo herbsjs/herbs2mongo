@@ -1,4 +1,5 @@
 const { entity, field } = require('@herbsjs/gotu')
+const { ObjectId } = require('mongodb')
 const Repository = require('../src/repository')
 const db = require('./db')
 const connection = require('./connection')
@@ -14,16 +15,16 @@ describe('Delete an Entity by id', () => {
 
        client = await db()
 
-       await client.dropDatabase(database)
+       await client.dropDatabase()
 
        await client.createCollection(collection)
 
-       await client.collection(collection).insertOne( { _id: "60edc25fc39277307ca9a7ff", numberTest: 100, boolean_test: true })
+       await client.collection(collection).insertOne( { _id: new ObjectId("60edc25fc39277307ca9a7ff"), numberTest: 100, boolean_test: true })
     })
 
     after(async () => {
 
-      await client.dropDatabase(database)
+      await client.dropDatabase()
 
     })
 

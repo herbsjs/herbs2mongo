@@ -5,8 +5,7 @@
   "main": "./src/herbs2mongo.js",
   "scripts": {
     "test": "mocha --timeout 999999 --colors --recursive ./test",
-    "testdb-pg": "mocha --timeout 999999 --colors --exit --recursive ./testdb/pg",
-    "testdb-mssql": "mocha --timeout 999999 --colors --exit --recursive ./testdb/mssql",
+    "testdb": "mocha --timeout 999999 --colors --exit --recursive ./testdb",
     "coverage-report": "nyc --reporter=html --reporter=text mocha --recursive ./test --timeout 10000",
     "coverage": "nyc --reporter=text mocha --recursive ./test --timeout 10000",
     "semantic-release": "semantic-release",
@@ -37,7 +36,7 @@
   "homepage": "https://github.com/herbsjs/herbs2mongo#readme",
   "dependencies": {
     "@herbsjs/herbs": "^1.4.2",
-    "mongodb": "^3.6.10"
+    "mongodb": "4.6.0"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",

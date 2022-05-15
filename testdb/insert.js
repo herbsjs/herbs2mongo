@@ -13,14 +13,14 @@ describe('Persist Entity', () => {
     before(async () => {
         client = await db()
 
-        await client.dropDatabase(database)
+        await client.dropDatabase()
 
         await client.createCollection(collection)
     })
 
     after(async () => {
 
-       await client.dropDatabase(database)
+       await client.dropDatabase()
 
       })
 

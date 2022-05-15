@@ -1,5 +1,6 @@
 const { entity, field } = require('@herbsjs/gotu')
 const Repository = require('../src/repository')
+const { ObjectId } = require('mongodb')
 const db = require('./db')
 const connection = require('./connection')
 const assert = require('assert')
@@ -14,17 +15,17 @@ describe('Delete Entitys by filter', () => {
 
        client = await db()
 
-       await client.dropDatabase(database)
+       await client.dropDatabase()
 
        await client.createCollection(collection)
 
-       await client.collection(collection).insertOne( { _id: "60edc25fc39277307ca9a7ff", number_test: 100, boolean_test: true })
-       await client.collection(collection).insertOne( { _id: "70edc25fc39277307ca9a700", number_test: 200, boolean_test: false })
+       await client.collection(collection).insertOne( { _id: new ObjectId("60edc25fc39277307ca9a7ff"), number_test: 100, boolean_test: true })
+       await client.collection(collection).insertOne( { _id: new ObjectId("70edc25fc39277307ca9a700"), number_test: 200, boolean_test: false })
     })
 
     after(async () => {
 
-      await client.dropDatabase(database)
+      await client.dropDatabase()
 
     })
 
@@ -84,7 +85,7 @@ describe('Delete Entitys by filter', () => {
              findStatement.number_test = 200
              const retDBWithValue =  await collectionConnection.findOne(findStatement)
 
-             assert.deepStrictEqual(retDBWithValue._id, '70edc25fc39277307ca9a700')
+             assert.deepStrictEqual(retDBWithValue._id, new ObjectId('70edc25fc39277307ca9a700'))
         })
     })
 })

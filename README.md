@@ -224,7 +224,7 @@ Insert an array of Entities into a table.
 
 Format: `.insertMany([entity])` where `[entity]` is a array of Entities instances with values to be persisted.
 
-Return: The inserted entity with the values from database.
+Return: The inserted id's in ObjectId format with the values from database.
 
 ```javascript
 
