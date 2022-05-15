@@ -62,13 +62,6 @@ class DataMapper {
       .map((i) => i.nameDb)
   }
 
-  customMap(object, mapFn) {
-    return Object.keys(object).reduce(function(result, key){
-        result[key] = mapFn(object[key])
-        return result
-        }, {})
-   }
-
   collectionFieldsWithValue(instance) {
 
     let collectionFields = this.allFields
