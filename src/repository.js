@@ -90,11 +90,11 @@ module.exports = class Repository {
     delete payload._id
 
     const ret = await this.runner().collection(this.collectionQualifiedName)
-      .updateOne({ _id:  new ObjectId(entityInstance._id)},
+      .updateOne({ _id:  new ObjectId(entityInstance._id | entityInstance.id)},
                  { $set : payload },
                  { upsert: true })
 
-    return ret.modifiedCount === 1
+    return !!(ret.modifiedCount || ret.upsertedCount)
   }
 
 

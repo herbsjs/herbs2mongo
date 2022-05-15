@@ -15,7 +15,7 @@ describe("Update an Entity", () => {
     })
   }
 
-  const givenAnRepositoryClass = (options) => {
+  const givenAnRepositoryClass = () => {
     return class ItemRepositoryBase extends Repository {
       constructor(options) {
         super(options)
@@ -31,7 +31,7 @@ describe("Update an Entity", () => {
         return {
           updateOne: (p) => {
             spy.payload = p
-            { return { modifiedCount:  1 } }
+            { return { modifiedCount:  1, upsertedCount: 1 } }
           }
         }
       }
