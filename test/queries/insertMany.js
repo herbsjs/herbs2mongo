@@ -1,7 +1,7 @@
 const { entity, field } = require("@herbsjs/gotu")
 const Repository = require("../../src/repository")
 const assert = require("assert")
-const ObjectID = require('mongodb').ObjectID
+const { ObjectId } = require('mongodb')
 
 describe("Insert an Array of Entities", () => {
   const givenAnEntity = () => {
@@ -43,11 +43,12 @@ describe("Insert an Array of Entities", () => {
     let spy = {}
     let arrEntity = []
 
-    const retFromDeb = { 
-        ops: [
-            { _id: ObjectID("60edc25fc39277307ca9a7ff"),numberTest: 100,booleanTest: true },
-            { _id: ObjectID("60edc25fc39277307ca9a7ed"),numberTest: 10,booleanTest: false  },
-        ] 
+    const retFromDeb = {
+      acknowledged : true,
+      insertedIds: [
+            { _id: new ObjectId("60edc25fc39277307ca9a7ff")},
+            { _id: new ObjectId("60edc25fc39277307ca9a7ed") },
+        ]
     }
     const collectionName = "aCollection"
     const anEntity = givenAnEntity()
@@ -77,12 +78,12 @@ describe("Insert an Array of Entities", () => {
     const ret = await itemRepo.insertMany(arrEntity)
 
     //then
-    assert.deepStrictEqual(ret[0].id,  "60edc25fc39277307ca9a7ff")
+    assert.deepStrictEqual(ret[0]._id,  new ObjectId("60edc25fc39277307ca9a7ff"))
     assert.deepStrictEqual(spy.collectionName, collectionName)
     assert.deepStrictEqual(spy.payload[0], { _id: "60edc25fc39277307ca9a7ff", number_test: 100, boolean_test: true })
 
-    assert.deepStrictEqual(ret[1].id,  "60edc25fc39277307ca9a7ed")
+    assert.deepStrictEqual(ret[1]._id,  new ObjectId("60edc25fc39277307ca9a7ed"))
     assert.deepStrictEqual(spy.collectionName, collectionName)
-    assert.deepStrictEqual(spy.payload[1], { _id: "60edc25fc39277307ca9a7ed", number_test: 10, boolean_test: false })    
+    assert.deepStrictEqual(spy.payload[1], { _id: "60edc25fc39277307ca9a7ed", number_test: 10, boolean_test: false })
   })
 })

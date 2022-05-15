@@ -1,6 +1,7 @@
 const { entity, field } = require('@herbsjs/gotu')
 const Repository = require('../src/repository')
 const db = require('./db')
+const { ObjectId } = require('mongodb')
 const connection = require('./connection')
 const assert = require('assert')
 let client = {}
@@ -12,14 +13,14 @@ describe('Persist Entity', () => {
 
     before(async () => {
       client = await db()
-      await client.dropDatabase(database)
+      await client.dropDatabase()
       await client.createCollection(collection)
-      await client.collection(collection).insertOne( { _id: "60edc25fc39277307ca9a7ff", number_test: 100, boolean_test: true, string_test: 'aString' })
-      await client.collection(collection).insertOne( { _id: "70edc25fc39277307ca9a700", number_test: 200, boolean_test: false })
+      await client.collection(collection).insertOne( { _id: new ObjectId("60edc25fc39277307ca9a7ff"), number_test: 100, boolean_test: true, string_test: 'aString' })
+      await client.collection(collection).insertOne( { _id: new ObjectId("70edc25fc39277307ca9a700"), number_test: 200, boolean_test: false })
     })
 
     after(async () => {
-      await client.dropDatabase(database)
+      await client.dropDatabase()
     })
 
     const givenAnRepositoryClass = (options) => {
@@ -69,7 +70,7 @@ describe('Persist Entity', () => {
             anEntity.id = "60edc25fc39277307ca9a7ff"
 
             let filterDefinition = { id: anEntity.id  }
-            let updateDefinition = { $set: { "stringTest" : "everything works very well" } }
+            let updateDefinition = { $set: { "string_test" : "everything works very well" } }
 
             await itemRepo.updateMany({ filter: filterDefinition, update: updateDefinition})
 

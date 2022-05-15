@@ -1,6 +1,7 @@
 const { entity, field } = require('@herbsjs/gotu')
 const Repository = require('../src/repository')
 const db = require('./db')
+const { ObjectId } = require('mongodb')
 const connection = require('./connection')
 const assert = require('assert')
 let client = {}
@@ -12,12 +13,12 @@ describe('Persist Array Entities', () => {
 
     before(async () => {
         client = await db()
-        await client.dropDatabase(database)
+        await client.dropDatabase()
         await client.createCollection(collection)
     })
 
     after(async () => {
-        await client.dropDatabase(database)
+        await client.dropDatabase()
     })
 
     const givenAnRepositoryClass = (options) => {
@@ -106,6 +107,6 @@ describe('Persist Array Entities', () => {
             const collectionConnection = await client.collection(collection)
             const retDB =  await collectionConnection.findOne(findStatement)
             assert.deepStrictEqual(retDB.string_test, 'string two test')
-        })        
+        })
     })
 })

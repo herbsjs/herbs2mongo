@@ -51,8 +51,9 @@ module.exports = class Repository {
   */
    async insertMany(arrayEntityInstance) {
     const payload = arrayEntityInstance.map((entityInstance) => this.dataMapper.collectionFieldsWithValue(entityInstance))
-    let { ops } = await this.runner().collection(this.collectionQualifiedName).insertMany(payload)
-    return ops.map((op) => this.dataMapper.toEntity(op))
+    let result = await this.runner().collection(this.collectionQualifiedName).insertMany(payload)
+    if(!result) return null
+    return result.insertedIds
   }
 
   /**
@@ -73,7 +74,7 @@ module.exports = class Repository {
         { upsert: true }
       )
 
-    return ret.modifiedCount === 1
+    return ret.modifiedCount === 1 || ret.upsertedCount === 1
   }
 
   /**
@@ -200,7 +201,7 @@ module.exports = class Repository {
     const ret = await this.runner().collection(this.collectionQualifiedName)
       .deleteOne({ _id:  new ObjectId(id)})
 
-    return ret.result.ok === 1
+    return ret.deletedCount > 0 || ret.result.ok === 1
   }
 
     /**
@@ -240,6 +241,6 @@ module.exports = class Repository {
 
       let ret = await query
 
-      return ret.result.ok === 1
+      return ret.deletedCount > 0 || ret.result.ok === 1
     }
 }
