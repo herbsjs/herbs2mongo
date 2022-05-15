@@ -1,3 +1,20 @@
+# [2.0.0](https://github.com/herbsjs/herbs2mongo/compare/v1.0.3...v2.0.0) (2022-05-15)
+
+
+### Bug Fixes
+
+* 🐛 update dependencies (herbs and semantic release) ([491b612](https://github.com/herbsjs/herbs2mongo/commit/491b612e7cff705d7579b542970958a0f63b8564))
+
+
+### Features
+
+* 🎸 new mongodb version driver ([d7053b0](https://github.com/herbsjs/herbs2mongo/commit/d7053b0b904649d8af38bb686be1e16576ffcdd6))
+
+
+### BREAKING CHANGES
+
+* 🧨 insertMany has a breaking change because of update of driver.
+
 ## [1.0.3](https://github.com/herbsjs/herbs2mongo/compare/v1.0.2...v1.0.3) (2022-05-15)
 
 
