@@ -1,3 +1,12 @@
+## [1.0.3](https://github.com/herbsjs/herbs2mongo/compare/v1.0.2...v1.0.3) (2022-05-15)
+
+
+### Bug Fixes
+
+* returning null when do not found a document ([5ddb8c9](https://github.com/herbsjs/herbs2mongo/commit/5ddb8c950c6fa6bb59527e9cfa10b96f0531d764)), closes [#12](https://github.com/herbsjs/herbs2mongo/issues/12)
+* update function dont returns the upsertedCount prop ([4981bc8](https://github.com/herbsjs/herbs2mongo/commit/4981bc80979e76057f4dffa7e6fa0f5eeda5e08c))
+* using ObjectID in queryies ([f979b69](https://github.com/herbsjs/herbs2mongo/commit/f979b698f58da5b63df4465fda6b80bb35b78384)), closes [#14](https://github.com/herbsjs/herbs2mongo/issues/14)
+
 ## [1.0.2](https://github.com/herbsjs/herbs2mongo/compare/v1.0.1...v1.0.2) (2022-01-15)
 
 
