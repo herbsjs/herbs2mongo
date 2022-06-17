@@ -14,11 +14,11 @@ module.exports = class Convention {
     }
 
     static omit(obj, ...props) {
-        const result = { ...obj };
+        const result = { ...obj }
         props.forEach(function (prop) {
-            delete result[prop];
-        });
-        return result;
+            delete result[prop]
+        })
+        return result
     }
 
 }
