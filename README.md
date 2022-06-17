@@ -23,10 +23,7 @@ module.exports = async () => {
   if (dbInstance) {
       return new Promise((resolve) => resolve(dbInstance))
   }
-  const client = await new MongoClient(config.connectionString, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-  }).connect()
+  const client = await new MongoClient(config.connectionString).connect()
   dbInstance = client.db(config.databaseName)
   Logger.setLevel("debug") // set this if you want to debug all queries
   return dbInstance
@@ -48,7 +45,7 @@ class ItemRepository extends Repository {
             collection: 'aCollection',
             database,
             ids: ['id'],
-            mongodb: await connection()
+            mongodb: connection
         })
     }
 
@@ -190,6 +187,14 @@ Adds a filter to the query with given values.
 ```javascript
 const repo = new ItemRepository(injection)
 const ret = await repo.find({ filter: { stringTest: ["aString"] } })
+```
+
+- `find with native parameters`
+You also can use the method find to use the mongoDB [native parameters](https://www.mongodb.com/docs/manual/reference/method/db.collection.find/)
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ _id : { $in : [`4323fefwed4234`, '3432d23232dfff'] } } )
 ```
 
 ### `findByID`

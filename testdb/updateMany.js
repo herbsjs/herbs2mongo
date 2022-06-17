@@ -1,6 +1,5 @@
 const { entity, field } = require('@herbsjs/gotu')
 const Repository = require('../src/repository')
-const db = require('./db')
 const { ObjectId } = require('mongodb')
 const connection = require('./connection')
 const assert = require('assert')
@@ -12,7 +11,7 @@ describe('Persist Entity', () => {
     const database = 'herbs2mongo_testdb'
 
     before(async () => {
-      client = await db()
+      client = await connection()
       await client.dropDatabase()
       await client.createCollection(collection)
       await client.collection(collection).insertOne( { _id: new ObjectId("60edc25fc39277307ca9a7ff"), number_test: 100, boolean_test: true, string_test: 'aString' })
@@ -60,7 +59,7 @@ describe('Persist Entity', () => {
                 entity: anEntity,
                 collection,
                 ids: ['id'],
-                mongodb: await connection()
+                mongodb: await connection
             })
 
             const injection = {}

@@ -1,6 +1,5 @@
 const { entity, field } = require('@herbsjs/gotu')
 const Repository = require('../src/repository')
-const db = require('./db')
 const { ObjectId } = require('mongodb')
 const connection = require('./connection')
 const assert = require('assert')
@@ -13,7 +12,7 @@ describe('Query Find', () => {
 
     before(async () => {
 
-      client = await db()
+      client = await connection()
 
       await client.dropDatabase()
 
@@ -54,7 +53,7 @@ describe('Query Find', () => {
           collection,
           database,
           ids: ['id'],
-          mongodb: await connection()
+          mongodb: await connection
         })
 
         const injection = {}

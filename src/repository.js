@@ -17,8 +17,9 @@ module.exports = class Repository {
     this.dataMapper = new DataMapper(this.entity, this.entityIDs)
   }
 
-  runner() {
-    return this.mongodb
+  async runner() {
+    const instance = await this.mongodb()
+    return instance
   }
 
   /**
@@ -32,9 +33,8 @@ module.exports = class Repository {
   async insert(entityInstance) {
     const payload = this.dataMapper.collectionFieldsWithValue(entityInstance)
 
-    const ret = await this
-      .runner()
-      .collection(this.collectionQualifiedName)
+    const instance = await this.runner()
+    const ret = await instance.collection(this.collectionQualifiedName)
       .insertOne(payload)
 
     payload._id = ret.insertedId
@@ -50,8 +50,9 @@ module.exports = class Repository {
   * @return {type} Current entities
   */
    async insertMany(arrayEntityInstance) {
+    const instance = await this.runner()
     const payload = arrayEntityInstance.map((entityInstance) => this.dataMapper.collectionFieldsWithValue(entityInstance))
-    let result = await this.runner().collection(this.collectionQualifiedName).insertMany(payload)
+    let result = await instance.collection(this.collectionQualifiedName).insertMany(payload)
     if(!result) return null
     return result.insertedIds
   }
@@ -65,9 +66,8 @@ module.exports = class Repository {
   * @return {type}  True when success
   */
    async updateMany(options = { filter, update }) {
-    const ret = await this
-      .runner()
-      .collection(this.collectionQualifiedName)
+    const instance = await this.runner()
+    const ret = await instance.collection(this.collectionQualifiedName)
       .updateMany(
         options.filter,
         options.update,
@@ -90,7 +90,8 @@ module.exports = class Repository {
     const payload = this.dataMapper.collectionFieldsWithValue(entityInstance)
     delete payload._id
 
-    const ret = await this.runner().collection(this.collectionQualifiedName)
+    const instance = await this.runner()
+    const ret = await instance.collection(this.collectionQualifiedName)
       .updateOne({ _id:  new ObjectId(entityInstance._id | entityInstance.id)},
                  { $set : payload },
                  { upsert: true })
@@ -110,7 +111,8 @@ module.exports = class Repository {
 
   async findByID(id) {
 
-    const result = await this.runner().collection(this.collectionQualifiedName).findOne({ _id:  new ObjectId(id)})
+    const instance = await this.runner()
+    const result = await instance.collection(this.collectionQualifiedName).findOne({ _id:  new ObjectId(id)})
     if(!result) return null
 
     return this.dataMapper.toEntity(result)
@@ -135,8 +137,10 @@ module.exports = class Repository {
     options.skip = options.skip || 0
     options.project = options.project || null
     options.filter = options.filter || null
+    const innerOption = this.convention.omit(options, 'sort', 'limit', 'skip', 'project', 'filter')
+    const instance = await this.runner()
 
-    let query = this.runner().collection(this.collectionQualifiedName)
+    let query = instance.collection(this.collectionQualifiedName)
 
     if (options.limit > 0) query = query.limit(options.limit)
     if (options.skip > 0) query = query.skip(options.skip)
@@ -167,7 +171,7 @@ module.exports = class Repository {
     }
     else
     {
-      query = query.find({ }, queryOptions)
+      query = query.find(JSON.parse(JSON.stringify(innerOption)), queryOptions)
     }
 
     const cursor = query
@@ -197,8 +201,9 @@ module.exports = class Repository {
   * @return {type} True when success
   */
    async deleteByID(id) {
-
-    const ret = await this.runner().collection(this.collectionQualifiedName)
+ 
+    const instance = await this.runner()
+    const ret = await instance.collection(this.collectionQualifiedName)
       .deleteOne({ _id:  new ObjectId(id)})
 
     return ret.deletedCount > 0 || ret.result.ok === 1
@@ -214,9 +219,10 @@ module.exports = class Repository {
   */
      async deleteMany(options = { filter, project, skip, limit, sort }) {
 
+      const instance = await this.runner()
       options.filter = options.filter || null
 
-      let query = this.runner().collection(this.collectionQualifiedName)
+      let query = instance.collection(this.collectionQualifiedName)
 
       if (options.filter) {
         const conditionTermCollectionField = this.dataMapper.toCollectionFieldName(Object.keys(options.filter)[0]).toString()

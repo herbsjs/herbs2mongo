@@ -1,6 +1,5 @@
 const { entity, field } = require('@herbsjs/gotu')
 const Repository = require('../src/repository')
-const db = require('./db')
 const { ObjectId } = require('mongodb')
 const connection = require('./connection')
 const assert = require('assert')
@@ -12,7 +11,7 @@ describe('Persist Array Entities', () => {
     const database = 'herbs2mongo_testdb'
 
     before(async () => {
-        client = await db()
+        client = await connection()
         await client.dropDatabase()
         await client.createCollection(collection)
     })
@@ -57,7 +56,7 @@ describe('Persist Array Entities', () => {
                 entity: anEntity,
                 collection,
                 ids: ['id'],
-                mongodb: await connection()
+                mongodb: await connection
             })
 
             const aModifiedInstance = [
@@ -87,7 +86,7 @@ describe('Persist Array Entities', () => {
                 entity: anEntity,
                 collection,
                 ids: ['id'],
-                mongodb: await connection()
+                mongodb: await connection
             })
 
             const aModifiedInstance = [

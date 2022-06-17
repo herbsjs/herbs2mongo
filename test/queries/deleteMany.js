@@ -19,7 +19,7 @@ describe("Delete an Entity by id", () => {
     }
   }
 
-  const mongodb = (spy = {}) =>
+  const mongodb = (spy = {}) => async () =>
   ({
     collection: (f) => {
       spy.collectionName = f
