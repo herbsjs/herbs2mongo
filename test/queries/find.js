@@ -27,7 +27,7 @@ describe('Query Find', () => {
             }
         }
 
-        const mongoNoFilter = (ret, spy = {}) =>
+        const mongoNoFilter = (ret, spy = {}) => async () =>
         ({
           collection: (f) => {
             spy.collectionName = f
@@ -94,7 +94,7 @@ describe('Query Find', () => {
             }
         }
 
-        const mongo = (ret, spy = {}) =>
+        const mongo = (ret, spy = {}) => async () =>
         ({
           collection: (f) => {
             spy.collectionName = f

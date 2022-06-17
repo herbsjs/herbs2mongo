@@ -13,4 +13,12 @@ module.exports = class Convention {
         return scalarTypes.includes(type)
     }
 
+    static omit(obj, ...props) {
+        const result = { ...obj }
+        props.forEach(function (prop) {
+            delete result[prop]
+        })
+        return result
+    }
+
 }

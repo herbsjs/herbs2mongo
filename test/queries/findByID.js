@@ -25,7 +25,7 @@ describe('Query Find by ID', () => {
         }
     }
 
-    const mongodb = (ret, spy = {}) =>
+    const mongodb = (ret, spy = {}) => async () =>
     ({
       collection: (f) => {
         spy.collectionName = f

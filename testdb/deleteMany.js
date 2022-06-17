@@ -1,7 +1,6 @@
 const { entity, field } = require('@herbsjs/gotu')
 const Repository = require('../src/repository')
 const { ObjectId } = require('mongodb')
-const db = require('./db')
 const connection = require('./connection')
 const assert = require('assert')
 let client = {}
@@ -13,7 +12,7 @@ describe('Delete Entitys by filter', () => {
 
     before(async () => {
 
-       client = await db()
+       client = await connection()
 
        await client.dropDatabase()
 
@@ -64,7 +63,7 @@ describe('Delete Entitys by filter', () => {
               entity: anEntity,
               collection,
               ids: ['id'],
-              mongodb: await connection()
+              mongodb: await connection
             })
             const aModifiedInstance = givenAnModifiedEntity()
 

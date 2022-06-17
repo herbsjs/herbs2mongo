@@ -25,7 +25,7 @@ describe("Insert an Entity", () => {
     }
   }
 
-  const mongodb = (ret, spy = {}) =>
+  const mongodb = (ret, spy = {}) => async () =>
     ({
       collection: (f) => {
         spy.collectionName = f
