@@ -54,4 +54,24 @@ describe("Delete an Entity by id", () => {
     //then
     assert.deepStrictEqual(ret, true)
   })
+
+  it("should delete all", async () => {
+    //given
+    let spy = {}
+    const anEntity = givenAnEntity()
+    const ItemRepository = givenAnRepositoryClass()
+    const collectionName = "aCollection"
+    const itemRepo = new ItemRepository({
+      entity: anEntity,
+      collection: collectionName,
+      ids: ["id"],
+      mongodb: mongodb(spy)
+    })
+
+    //when
+    const ret = await itemRepo.deleteMany({ })
+
+    //then
+    assert.deepStrictEqual(ret, true)
+  })
 })
