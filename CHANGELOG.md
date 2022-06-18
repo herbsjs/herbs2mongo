@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/herbsjs/herbs2mongo/compare/v2.0.1...v2.1.0) (2022-06-17)
+
+
+### Features
+
+* add native parameter to filters and improve the connection method ([5adcde2](https://github.com/herbsjs/herbs2mongo/commit/5adcde2a3f6273077d7420a20d1fe369b1844ab6))
+
 ## [2.0.1](https://github.com/herbsjs/herbs2mongo/compare/v2.0.0...v2.0.1) (2022-06-13)
 
 
