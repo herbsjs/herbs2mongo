@@ -197,6 +197,15 @@ const repo = new ItemRepository(injection)
 const ret = await repo.find({ _id : { $in : [`4323fefwed4234`, '3432d23232dfff'] } } )
 ```
 
+- `findAll`
+You also findAll records using the native find without filters
+
+```javascript
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ } )
+```
+
+
 ### `findByID`
 Find entities by IDs
 
@@ -289,14 +298,30 @@ const ret = await repo.deleteByID(entity)
 
 Delete a group of Entities.
 
-Format: `.deleteMany(entity)` where `entity` is a Entity instance to be deleted.
+Format: `.deleteMany(options = { filter})` where `options` is a set of filters to be deleted.
 
 Return: `true` for success or `false` for error
 
 ```javascript
+
 const repo = new ItemRepository(injection)
 let filterDefinition = {  numberTest : [aModifiedInstance.numberTest] }
 const ret = await repo.deleteMany({ filter: filterDefinition })
+
+```
+
+### `delete`
+
+Delete an Entitie.
+
+Format: `.delete(entity)` where `entity` is a Entity instance to be deleted.
+
+Return: `true` for success or `false` for error
+
+```javascript
+
+const repo = new ItemRepository(injection)
+const ret = await repo.delete(aModifiedEntity)
 ```
 
 

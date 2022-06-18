@@ -1,11 +1,11 @@
-const { entity, field } = require("@herbsjs/gotu")
+const { entity, field, id } = require("@herbsjs/gotu")
 const Repository = require("../../src/repository")
 const assert = require("assert")
 
-describe("Delete an Entity by id", () => {
+describe("Delete an Entity", () => {
   const givenAnEntity = () => {
     return entity("An entity", {
-      id: field(Number),
+      id: id(Number),
       stringTest: field(String),
       booleanTest: field(Boolean),
     })
@@ -24,7 +24,7 @@ describe("Delete an Entity by id", () => {
     collection: (f) => {
       spy.collectionName = f
       return {
-        deleteMany: (p) => { return { result: { ok: 1 } } }
+        deleteOne: (p) => { return { result: { ok: 1 } } }
       }
     }
   })
@@ -46,30 +46,9 @@ describe("Delete an Entity by id", () => {
     anEntity.id = 1
     anEntity.stringTest = "test"
     anEntity.booleanTest = true
-    anEntity.numberTest = 100
 
     //when
-    const ret = await itemRepo.deleteMany({ filter: {  numberTest : [anEntity.numberTest] }})
-
-    //then
-    assert.deepStrictEqual(ret, true)
-  })
-
-  it("should delete all", async () => {
-    //given
-    let spy = {}
-    const anEntity = givenAnEntity()
-    const ItemRepository = givenAnRepositoryClass()
-    const collectionName = "aCollection"
-    const itemRepo = new ItemRepository({
-      entity: anEntity,
-      collection: collectionName,
-      ids: ["id"],
-      mongodb: mongodb(spy)
-    })
-
-    //when
-    const ret = await itemRepo.deleteMany({ })
+    const ret = await itemRepo.delete(anEntity)
 
     //then
     assert.deepStrictEqual(ret, true)
