@@ -209,15 +209,33 @@ module.exports = class Repository {
     return ret.deletedCount > 0 || ret.result.ok === 1
   }
 
+  /**
+  *
+  * Delete entity by seeking the Id
+  *
+  * @param {type} entity Entity
+  *
+  * @return {type} True when success
+  */
+   async delete(entity) {
+ 
+    const collectionIDs = this.dataMapper.collectionIDs()
+    const instance = await this.runner()
+    const ret = await instance.collection(this.collectionQualifiedName)
+      .deleteOne({ _id:  new ObjectId(entity[collectionIDs[0]])})
+
+    return ret.deletedCount > 0 || ret.result.ok === 1
+  }
+
     /**
   *
-  * Delete entity by ID
+  * Delete many by filters
   *
   * @param {type}  object.filter Filter items to list
   *
   * @return {type} True when success
   */
-     async deleteMany(options = { filter, project, skip, limit, sort }) {
+     async deleteMany(options = { filter}) {
 
       const instance = await this.runner()
       options.filter = options.filter || null
