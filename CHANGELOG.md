@@ -1,3 +1,15 @@
+# [2.2.0](https://github.com/herbsjs/herbs2mongo/compare/v2.1.0...v2.2.0) (2022-06-18)
+
+
+### Features
+
+* add delete method ([d873a9a](https://github.com/herbsjs/herbs2mongo/commit/d873a9af18d01e483fc1545058261380b969e766))
+
+
+### Reverts
+
+* revert peerDependencie of mongodb ([f375b99](https://github.com/herbsjs/herbs2mongo/commit/f375b99ef96570b7e0afb4538f2cc0a7a74dc960))
+
 # [2.1.0](https://github.com/herbsjs/herbs2mongo/compare/v2.0.1...v2.1.0) (2022-06-17)
 
 
