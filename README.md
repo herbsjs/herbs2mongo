@@ -310,6 +310,20 @@ const ret = await repo.deleteMany({ filter: filterDefinition })
 
 ```
 
+### `delete`
+
+Delete an Entitie.
+
+Format: `.delete(entity)` where `entity` is a Entity instance to be deleted.
+
+Return: `true` for success or `false` for error
+
+```javascript
+
+const repo = new ItemRepository(injection)
+const ret = await repo.delete(aModifiedEntity)
+```
+
 
 ## TODO
 
