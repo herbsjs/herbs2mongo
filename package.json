@@ -1,6 +1,6 @@
 {
   "name": "@herbsjs/herbs2mongo",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Create repositories using Mongo to retrieve and store Entities.",
   "main": "./src/herbs2mongo.js",
   "scripts": {
