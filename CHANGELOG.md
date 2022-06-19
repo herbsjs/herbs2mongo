@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/herbsjs/herbs2mongo/compare/v2.2.0...v2.2.1) (2022-06-19)
+
+
+### Bug Fixes
+
+* update method now uses findOneAndUpdate instead updateOne ([fca1c9b](https://github.com/herbsjs/herbs2mongo/commit/fca1c9b465ec8d035f05c5aabe370915825afbec))
+
 # [2.2.0](https://github.com/herbsjs/herbs2mongo/compare/v2.1.0...v2.2.0) (2022-06-18)
 
 
