@@ -75,14 +75,7 @@ describe('Persist Entity', () => {
             //when
             aModifiedInstance.stringTest = "updated"
             const ret = await itemRepo.update(aModifiedInstance)
-
-            //then
-             var findStatement = {}
-             findStatement.string_test = "updated"
-             const collectionConnection = await client.collection(collection)
-             const retDB =  await collectionConnection.findOne(findStatement)
-             assert.deepStrictEqual(retDB.string_test, "updated")
-
+            assert.deepStrictEqual(ret.stringTest, "updated")           
         })
     })
 })
