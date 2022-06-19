@@ -81,22 +81,24 @@ module.exports = class Repository {
   *
   * Update entity
   *
-  * @param {type}   entityInstance Entity instance
+  * @param {type} entity Entity instance
   *
   * @return {type}  True when success
   */
-   async update(entityInstance) {
+   async update(entity) {
 
-    const payload = this.dataMapper.collectionFieldsWithValue(entityInstance)
+    const payload = this.dataMapper.collectionFieldsWithValue(entity)
     delete payload._id
+    const collectionIDs = this.dataMapper.collectionIDs()
 
     const instance = await this.runner()
     const ret = await instance.collection(this.collectionQualifiedName)
-      .updateOne({ _id:  new ObjectId(entityInstance._id | entityInstance.id)},
+      .findOneAndUpdate({ _id:  new ObjectId(entity[collectionIDs[0]])},
                  { $set : payload },
-                 { upsert: true })
+                 { upsert: true, returnDocument: 'after'})
 
-    return !!(ret.modifiedCount || ret.upsertedCount)
+    if(ret.ok === 0) return null
+    return this.dataMapper.toEntity(ret.value)
   }
 
 

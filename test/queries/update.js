@@ -1,4 +1,4 @@
-const { entity, field } = require("@herbsjs/gotu")
+const { entity, field, id } = require("@herbsjs/gotu")
 const Repository = require("../../src/repository")
 const assert = require("assert")
 
@@ -7,7 +7,7 @@ describe("Update an Entity", () => {
     const ParentEntity = entity('A Parent Entity', {})
 
     return entity('A entity', {
-      id: field(Number),
+      id: id(String),
       stringTest: field(String),
       booleanTest: field(Boolean),
       entityTest: field(ParentEntity),
@@ -29,9 +29,9 @@ describe("Update an Entity", () => {
       collection: (f) => {
         spy.collectionName = f
         return {
-          updateOne: (p) => {
+          findOneAndUpdate: (p) => {
             spy.payload = p
-            { return { modifiedCount:  1, upsertedCount: 1 } }
+            { return  { ok: '1', value: { _id: "70edc25fc39277307ca9a700", string_test: "test", boolean_test: true } }}
           }
         }
       }
@@ -49,7 +49,7 @@ describe("Update an Entity", () => {
       mongodb: mongodb(spy)
     })
 
-    anEntity.id = 1
+    anEntity.id = "70edc25fc39277307ca9a700"
     anEntity.stringTest = "test"
     anEntity.booleanTest = true
 
@@ -57,7 +57,7 @@ describe("Update an Entity", () => {
     const ret = await itemRepo.update(anEntity)
 
     //then
-    assert.deepStrictEqual(ret, true)
+    assert.deepStrictEqual(ret.stringTest, "test")
   })
 
 })
