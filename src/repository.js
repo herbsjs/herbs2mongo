@@ -110,15 +110,48 @@ module.exports = class Repository {
   *
   * @return {type} return entity when found
   */
+  /*
+    async findByID(id) {
 
-  async findByID(id) {
+      const instance = await this.runner()
+      const result = await instance.collection(this.collectionQualifiedName).findOne({ _id:  new ObjectId(id)})
+      if(!result) return null
 
-    const instance = await this.runner()
-    const result = await instance.collection(this.collectionQualifiedName).findOne({ _id:  new ObjectId(id)})
-    if(!result) return null
+      return this.dataMapper.toEntity(result)
+    }
+  */
 
-    return this.dataMapper.toEntity(result)
-  }
+/** 
+  *
+  * Finds entities matching the ID condition.
+  * 
+  * @param {type} ids The id or the array of _id's to search
+  * @return {type} List of entities
+  */
+     async findByID(ids) {
+      const instance = await this.runner()
+
+      const parsedValue = Array.isArray(ids) ? this.convention.toObjectIdArray(ids) : [ObjectId(ids)]
+
+      const result = await instance.collection(this.collectionQualifiedName).find({ _id: { $in : parsedValue }})
+      if(!result) return null
+
+      const cursor = result
+ 
+      if ((await cursor.count()) === 0) {
+        return null
+      }
+
+      const entities = []
+      const ret = await cursor.toArray()
+      if(!ret) return null
+      for (const row of ret) {
+        if (row === undefined) continue
+        entities.push(this.dataMapper.toEntity(row))
+      }
+  
+      return entities
+    }
 
 
   /**
@@ -173,7 +206,7 @@ module.exports = class Repository {
     }
     else
     {
-      query = query.find(JSON.parse(JSON.stringify(innerOption)), queryOptions)
+      query = query.find(innerOption, queryOptions)
     }
 
     const cursor = query

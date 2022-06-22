@@ -21,6 +21,7 @@ describe('Query Find by ID', () => {
 
       await client.collection(collection).insertOne( { _id: new ObjectId("60edc25fc39277307ca9a7ff"), number_test: 100, boolean_test: true, string_test: 'aString' })
       await client.collection(collection).insertOne( { _id: new ObjectId("70edc25fc39277307ca9a700"), number_test: 200, boolean_test: false })
+      await client.collection(collection).insertOne( { _id: new ObjectId("80edd25fc39272307ca9a712"), number_test: 300, boolean_test: false })
     })
 
     after(async () => {
@@ -64,7 +65,33 @@ describe('Query Find by ID', () => {
         const ret = await itemRepo.findByID(anEntity.id)
 
         //then
-        assert.deepStrictEqual(ret.toJSON(), { id: '60edc25fc39277307ca9a7ff', stringTest: "aString",  numberTest: 100, booleanTest: true })
-        assert.deepStrictEqual(ret.isValid(),true )
+        assert.deepStrictEqual(ret[0].toJSON(), { id: '60edc25fc39277307ca9a7ff', stringTest: "aString",  numberTest: 100, booleanTest: true })
+        assert.deepStrictEqual(ret[0].isValid(),true )
+    })
+
+    it('should return multiple entities', async () => {
+        //given
+        const anEntity = givenAnEntity()
+        const ItemRepository = givenAnRepositoryClass({
+            entity: anEntity,
+            collection,
+            database,
+            ids: ['id'],
+            mongodb: await connection
+        })
+        const injection = {}
+        const itemRepo = new ItemRepository(injection)
+      
+        const ids = [
+            '60edc25fc39277307ca9a7ff',
+            '80edd25fc39272307ca9a712',
+          ]
+
+        //when
+        const ret = await itemRepo.findByID(ids)
+
+        //then
+        assert.deepStrictEqual(ret[0].toJSON(), { id: '60edc25fc39277307ca9a7ff', stringTest: "aString",  numberTest: 100, booleanTest: true })
+        assert.deepStrictEqual(ret[0].isValid(),true )
     })
 })

@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha --timeout 999999 --colors --recursive ./test",
     "testdb": "mocha --timeout 999999 --colors --exit --recursive ./testdb",
+    "testfull": "npm test && npm run testdb",
     "coverage-report": "nyc --reporter=html --reporter=html mocha --recursive ./test --timeout 10000",
     "coverage": "nyc --reporter=text mocha --recursive ./test --timeout 10000",
     "semantic-release": "semantic-release",
@@ -36,7 +37,8 @@
   "homepage": "https://github.com/herbsjs/herbs2mongo#readme",
   "dependencies": {
     "@herbsjs/herbs": "^1.5.0",
-    "mongodb": "4.7.0"
+    "mongodb": "4.7.0",
+    "npm-check-updates": "^14.0.1"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
