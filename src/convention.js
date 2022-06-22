@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongodb')
+
 module.exports = class Convention {
 
     static camelToSnake(string) {
@@ -7,6 +9,16 @@ module.exports = class Convention {
     static toCollectionFieldName(entityField) {
         return this.camelToSnake(entityField)
     }
+
+    static toObjectIdArray(stringArray){
+        const objectArray = stringArray.map(function(x) { 
+          x = ObjectId(x.toString());
+          return x
+        })
+    
+        return objectArray
+      }
+    
 
     static isScalarType(type) {
         const scalarTypes = [Number, String, Boolean, Date, Object, Array]

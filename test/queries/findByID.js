@@ -30,18 +30,25 @@ describe('Query Find by ID', () => {
       collection: (f) => {
         spy.collectionName = f
         return {
-          findOne: (p) => {
+          find: (p,o) => {
             spy.payload = p
-            return ret
+            return {
+              toArray: () => {
+               return ret
+            },
+            count: () => {
+              return 2
+            }
+           }
           }
         }
       }
     })
 
-    it('should return entities instances instance', async () => {
+    it('should return entities instances', async () => {
         //given
         const spy = {}
-        const retFromDeb = { _id: "60edc25fc39277307ca9a7ff", number_test: 100, boolean_test: true, string_test: 'aString' }
+        const retFromDeb = [{ _id: "60edc25fc39277307ca9a7ff", number_test: 100, boolean_test: true, string_test: 'aString' }]
 
         const anEntity = givenAnEntity()
         const ItemRepository = givenAnRepositoryClass()
@@ -57,8 +64,8 @@ describe('Query Find by ID', () => {
         const ret = await itemRepo.findByID(anEntity.id)
 
         //then
-        assert.deepStrictEqual(ret.toJSON(), { id: '60edc25fc39277307ca9a7ff', stringTest: "aString",  numberTest: 100, booleanTest: true , entityTest: undefined, entitiesTest: undefined })
-        assert.deepStrictEqual(ret.isValid(),true )
+        assert.deepStrictEqual(ret[0].toJSON(), { id: '60edc25fc39277307ca9a7ff', stringTest: "aString",  numberTest: 100, booleanTest: true , entityTest: undefined, entitiesTest: undefined })
+        assert.deepStrictEqual(ret[0].isValid(),true )
 
     })
 

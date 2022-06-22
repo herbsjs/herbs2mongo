@@ -193,8 +193,17 @@ const ret = await repo.find({ filter: { stringTest: ["aString"] } })
 You also can use the method find to use the mongoDB [native parameters](https://www.mongodb.com/docs/manual/reference/method/db.collection.find/)
 
 ```javascript
+const { ObjectId } = require('mongodb')
+
 const repo = new ItemRepository(injection)
-const ret = await repo.find({ _id : { $in : [`4323fefwed4234`, '3432d23232dfff'] } } )
+const ret = await repo.find({ _id : { $in : [ObjectId('4323fefwed4234'), ObjectId('3432d23232dfff')] } } )
+```
+
+```javascript
+const { ObjectId } = require('mongodb')
+
+const repo = new ItemRepository(injection)
+const ret = await repo.find({ _id : { $in : [ObjectId('4323fefwed4234'), ObjectId('3432d23232dfff')] } } )
 ```
 
 - `findAll`
@@ -209,14 +218,27 @@ const ret = await repo.find({ } )
 ### `findByID`
 Find entities by IDs
 
-Format: `.findByID(id)` where `id` is a ObjectId string, this will be changed to _id automaticaly
+Format: `.findByID(id)` where `id` is a ObjectId string or array, this will be changed to _id automaticaly
 
-Return: Entity
+Return: Entity array
 
 ```javascript
 const repo = new ItemRepository(injection)
 const ret = await repo.findByID('60edc25fc39277307ca9a7ff')
 ```
+or 
+```javascript
+
+ const ids = [
+            '60edc25fc39277307ca9a7ff',
+            '80edd25fc39272307ca9a712',
+          ]
+
+const repo = new ItemRepository(injection)
+const ret = await repo.findByID(ids)
+```
+
+
 
 ### `insert`
 
