@@ -12,7 +12,7 @@ module.exports = class Convention {
 
     static toObjectIdArray(stringArray){
         const objectArray = stringArray.map(function(x) { 
-          x = ObjectId(x.toString());
+          x = ObjectId(x.toString())
           return x
         })
     
