@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/herbsjs/herbs2mongo/compare/v2.2.1...v3.0.0) (2022-06-22)
+
+
+### Features
+
+* change findById return ([9339459](https://github.com/herbsjs/herbs2mongo/commit/933945929b75913dbc9d3da4d659d49ce62dd0a6))
+
+
+### BREAKING CHANGES
+
+* now findById returns an array instead only element
+
 ## [2.2.1](https://github.com/herbsjs/herbs2mongo/compare/v2.2.0...v2.2.1) (2022-06-19)
 
 
