@@ -77,7 +77,7 @@ Following Herbs architecture principals it is not the intention of this lib to c
 
 herbs2Mongo is just one of many bridges possible between Herbs and other packages.
 
-The advantage of using Mongo is that is a simple and flexible way to retrieve data from MongoDB, as a plus we're using the oficial driver from MongoDB here.
+The advantage of using Mongo is that is a simple and flexible way to retrieve data from MongoDB, as a plus we're using the [oficial driver from MongoDB](https://www.mongodb.com/docs/drivers/node/current/) here.
 
 ### Repository setup
 
@@ -94,7 +94,7 @@ class YourRepository extends Repository {
             collection: 'product_items',
             database,
             ids: ['id'],
-            mongodb: await connection()
+            mongodb: connection
         })
     }
 }
