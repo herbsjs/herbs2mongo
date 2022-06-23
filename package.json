@@ -38,7 +38,7 @@
   "dependencies": {
     "@herbsjs/herbs": "^1.5.0",
     "mongodb": "4.7.0",
-    "npm-check-updates": "^14.0.1"
+    "npm-check-updates": "^14.0.2"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
