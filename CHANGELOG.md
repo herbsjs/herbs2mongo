@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/herbsjs/herbs2mongo/compare/v3.0.0...v3.0.1) (2022-06-25)
+
+
+### Bug Fixes
+
+* fix method find when return is zero ([d8b2cf2](https://github.com/herbsjs/herbs2mongo/commit/d8b2cf2b340b34fd3d2bba12015fd7f5f43cacd6))
+
 # [3.0.0](https://github.com/herbsjs/herbs2mongo/compare/v2.2.1...v3.0.0) (2022-06-22)
 
 
