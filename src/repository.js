@@ -110,16 +110,6 @@ module.exports = class Repository {
   *
   * @return {type} return entity when found
   */
-  /*
-    async findByID(id) {
-
-      const instance = await this.runner()
-      const result = await instance.collection(this.collectionQualifiedName).findOne({ _id:  new ObjectId(id)})
-      if(!result) return null
-
-      return this.dataMapper.toEntity(result)
-    }
-  */
 
 /** 
   *
@@ -137,12 +127,12 @@ module.exports = class Repository {
       if(!result) return null
 
       const cursor = result
- 
+      const entities = []
+
       if ((await cursor.count()) === 0) {
-        return null
+        return entities
       }
 
-      const entities = []
       const ret = await cursor.toArray()
       if(!ret) return null
       for (const row of ret) {
