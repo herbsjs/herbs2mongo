@@ -36,30 +36,38 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2mongo#readme",
   "dependencies": {
-    "@herbsjs/herbs": "^1.6.1",
-    "mongodb": "4.7.0"
+    "@herbsjs/herbs": "^1.6.2"
+  },
+  "peerDependencies": {
+    "mongodb": "^4.8.1"
+  },
+  "peerDependenciesMeta": {
+    "mongodb": {
+      "optional": false
+    }
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.0.4",
+    "@semantic-release/github": "^8.0.5",
     "@semantic-release/npm": "^9.0.1",
     "@semantic-release/release-notes-generator": "^10.0.3",
-    "@babel/eslint-parser": "^7.18.2",
+    "@babel/eslint-parser": "^7.18.9",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^16.0.1",
-    "eslint": "^8.18.0",
+    "eslint": "^8.22.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^4.1.0",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
     "prettier": "^2.7.1",
+    "mongodb": "^4.8.1",
     "semantic-release": "^19.0.3"
   },
   "repository": {
