@@ -1,3 +1,10 @@
+## [3.0.3](https://github.com/herbsjs/herbs2mongo/compare/v3.0.2...v3.0.3) (2022-08-15)
+
+
+### Bug Fixes
+
+* **herbs:** update herbs and mongo dependencies ([becf1f3](https://github.com/herbsjs/herbs2mongo/commit/becf1f36aa751216e015f620b6a03fd73ec92d67))
+
 ## [3.0.2](https://github.com/herbsjs/herbs2mongo/compare/v3.0.1...v3.0.2) (2022-06-28)
 
 
