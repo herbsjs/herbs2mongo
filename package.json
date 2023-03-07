@@ -36,7 +36,7 @@
   "license": "MIT",
   "homepage": "https://github.com/herbsjs/herbs2mongo#readme",
   "dependencies": {
-    "@herbsjs/herbs": "^1.6.2"
+    "@herbsjs/herbs": "^2.0.0"
   },
   "peerDependencies": {
     "mongodb": "^4.8.1"
