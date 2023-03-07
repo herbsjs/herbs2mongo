@@ -1,3 +1,21 @@
+# [4.0.0](https://github.com/herbsjs/herbs2mongo/compare/v3.0.3...v4.0.0) (2023-03-07)
+
+
+### Bug Fixes
+
+* **deps:** bump @herbsjs/herbs from 1.6.2 to 2.0.0 ([aafbf74](https://github.com/herbsjs/herbs2mongo/commit/aafbf74e07fcb9cf45376e05a11e2e10cac4ca29))
+* **package.json:** up herbs version ([6c09e1d](https://github.com/herbsjs/herbs2mongo/commit/6c09e1d59e47c76bda0dfb6b4d10b07494a97738))
+
+
+### Continuous Integration
+
+* fix cd ([702788f](https://github.com/herbsjs/herbs2mongo/commit/702788f6a1674ac2e307106b71d6ccdf644f6c1b))
+
+
+### BREAKING CHANGES
+
+* upgrade buchu to 2.0
+
 ## [3.0.3](https://github.com/herbsjs/herbs2mongo/compare/v3.0.2...v3.0.3) (2022-08-15)
 
 
