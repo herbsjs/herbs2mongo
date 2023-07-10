@@ -98,6 +98,90 @@ describe('Data Mapper', () => {
         })
     })
 
+    describe('Simple Nested Entity', () => {
+        const givenAnNestedEntity = () => {
+            const ChildEntity = entity('Child entity', {
+                field1: field(String)
+            })
+
+            return entity('A nested entity', {
+                idField: field(Number),
+                field1: field(Boolean),
+                childEntity: field(ChildEntity),
+                arrayChildEntity: field([ChildEntity])
+            })
+        }
+
+        it('should retrieve collection fields an nested entity', () => {
+            //given
+            const Entity = givenAnNestedEntity()
+            const entityInstance = new Entity()
+            entityInstance.idField = 1
+            entityInstance.field1 = true
+            entityInstance.childEntity = {
+                field1: 'String'
+            }
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+
+            //when
+            const toEntity = dataMapper.collectionFields()
+
+            //then
+            assert.deepStrictEqual(toEntity, ['id_field', 'field1', 'child_entity', 'array_child_entity'])
+        })
+
+        it('should retrieve collection fields with values of an nested entity', () => {
+            //given
+            const Entity = givenAnNestedEntity()
+            const entityInstance = new Entity()
+            entityInstance.idField = 1
+            entityInstance.field1 = true
+            entityInstance.childEntity = {
+                field1: 'String'
+            }
+            entityInstance.arrayChildEntity = [
+                {
+                    field1: 'String'
+                }
+            ]
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+
+            //when
+            const toEntity = dataMapper.collectionFieldsWithValue(entityInstance)
+
+            //then
+            assert.deepStrictEqual(toEntity, {
+                id_field: 1,
+                field1: true,
+                child_entity: {
+                    field1: 'String'
+                },
+                array_child_entity: {
+                    0: { field1: 'String' }
+                }
+            })
+        })
+
+        it('should retrieve collection fields with values of an nested entity with child entity as empty object', () => {
+            //given
+            const Entity = givenAnNestedEntity()
+            const entityInstance = new Entity()
+            entityInstance.idField = 1
+            entityInstance.field1 = true
+            entityInstance.childEntity = {}
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+
+            //when
+            const toEntity = dataMapper.collectionFieldsWithValue(entityInstance)
+
+            //then
+            assert.deepStrictEqual(toEntity, { id_field: 1, field1: true, child_entity: {} })
+        })
+    })
+
     describe('Complex Entity - Multiple Types', () => {
 
         const givenAnComplexEntity = () => {
