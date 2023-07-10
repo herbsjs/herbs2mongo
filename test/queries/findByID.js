@@ -64,7 +64,7 @@ describe('Query Find by ID', () => {
         const ret = await itemRepo.findByID(anEntity.id)
 
         //then
-        assert.deepStrictEqual(ret[0].toJSON(), { id: '60edc25fc39277307ca9a7ff', stringTest: "aString",  numberTest: 100, booleanTest: true , entityTest: undefined, entitiesTest: undefined })
+        assert.deepStrictEqual(ret[0].toJSON(), { id: '60edc25fc39277307ca9a7ff', stringTest: "aString",  numberTest: 100, booleanTest: true , entityTest: undefined, entitiesTest: null })
         assert.deepStrictEqual(ret[0].isValid(),true )
 
     })
