@@ -58,15 +58,31 @@ class DataMapper {
 
   collectionFields() {
     return this.allFields
-      .filter((i) => !i.isEntity)
       .map((i) => i.nameDb)
+  }
+
+  filterNullAndUndefined(i, instance) {
+    if (instance[i.name] === null || instance[i.name] === undefined) return null
+    if (i.isEntity) {
+      const entity = instance[i.name]
+      const newObject = Object.keys(entity).reduce((acc, key) => {
+        if (entity[key] === null || entity[key] === undefined) return acc
+
+        acc[key] = entity[key]
+
+        return acc
+      }, {})
+
+      return { [i.nameDb]: newObject }
+    }
+    return { [i.nameDb]: instance[i.name] }
   }
 
   collectionFieldsWithValue(instance) {
 
     let collectionFields = this.allFields
-      .filter((i) => !i.isEntity)
-      .map(i => ({ [i.nameDb]: instance[i.name] }))
+      .map(i => this.filterNullAndUndefined(i, instance))
+      .filter(Boolean)
       .reduce((x, y) => ({ ...x, ...y }))
 
     if (instance.id === undefined) {
