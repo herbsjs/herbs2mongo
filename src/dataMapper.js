@@ -142,7 +142,7 @@ class DataMapper {
       Object.defineProperty(proxy, field.name, {
         enumerable: true,
         get: function () {
-          if (field.isEntity) return undefined
+          if (field.isEntity) return parser(this._payload[nameDb])
           return parser(this._payload[nameDb])
         }
       })
