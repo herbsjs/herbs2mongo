@@ -38,7 +38,6 @@ describe('Data Mapper', () => {
             assert.deepStrictEqual(toEntity.idField, 1)
             assert.deepStrictEqual(toEntity.field1, true)
             assert.deepStrictEqual(toEntity.fieldName, false)
-
         })
 
         it('should convert an entity field to the collection string convetion', () => {
@@ -99,10 +98,11 @@ describe('Data Mapper', () => {
     })
 
     describe('Simple Nested Entity', () => {
+        const ChildEntity = entity('Child entity', {
+            field1: field(String)
+        })
+
         const givenAnNestedEntity = () => {
-            const ChildEntity = entity('Child entity', {
-                field1: field(String)
-            })
 
             return entity('A nested entity', {
                 idField: field(Number),
@@ -111,6 +111,33 @@ describe('Data Mapper', () => {
                 arrayChildEntity: field([ChildEntity])
             })
         }
+
+        it('should convert data from collection to nested entity', () => {
+            //given
+            const Entity = givenAnNestedEntity()
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+            const childEntity = new ChildEntity()
+            childEntity.field1 = 'String'
+
+            //when
+            const toEntity = dataMapper.toEntity({
+                id_field: 1,
+                field1: true,
+                child_entity: {
+                    field1: 'String'
+                },
+                array_child_entity: [
+                    { field1: 'String' }
+                ]
+            })
+
+            //then
+            assert.deepStrictEqual(toEntity.idField, 1)
+            assert.deepStrictEqual(toEntity.field1, true)
+            assert.deepStrictEqual(toEntity.childEntity, childEntity)
+            assert.deepStrictEqual(toEntity.arrayChildEntity, [childEntity])
+        })
 
         it('should retrieve collection fields an nested entity', () => {
             //given
