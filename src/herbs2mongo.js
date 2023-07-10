@@ -1,3 +1,4 @@
 const Repository = require('./repository')
+const DataMapper = require('./dataMapper')
 
-module.exports = { Repository }
+module.exports = { Repository, DataMapper }
