@@ -1,5 +1,5 @@
 const Convention = require('./convention')
-const { entity } = require('@herbsjs/herbs')
+const { entity, checker } = require('@herbsjs/herbs')
 const dependency = { convention: Convention }
 
 class DataMapper {
@@ -101,7 +101,7 @@ class DataMapper {
 
     function getDataParser(type, isArray) {
       function arrayDataParser(value, parser) {
-        if (value === null) return null
+        if (checker.isEmpty(value)) return null
         return value.map((i) => parser(i))
       }
 
