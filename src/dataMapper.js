@@ -142,7 +142,21 @@ class DataMapper {
       Object.defineProperty(proxy, field.name, {
         enumerable: true,
         get: function () {
-          if (field.isEntity) return parser(this._payload[nameDb])
+          if (field.isEntity && !field.isArray) {
+            const entity = this._payload[field.nameDb]
+
+            if (checker.isEmpty(entity)) return undefined
+
+            const object = field.type.schema.fields.reduce((obj, entityField) => {
+              const fieldNameDb = convention.toCollectionFieldName(entityField.name)
+              const fieldParser = getDataParser(entityField.type, Array.isArray(entityField.type))
+
+              obj[entityField.name] = fieldParser(this._payload[field.nameDb][fieldNameDb])
+              return obj
+            }, {})
+
+            return object
+          }
           return parser(this._payload[nameDb])
         }
       })
