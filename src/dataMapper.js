@@ -61,29 +61,33 @@ class DataMapper {
       .map((i) => i.nameDb)
   }
 
-  filterNullAndUndefined(i, instance) {
-    if (instance[i.name] === null || instance[i.name] === undefined) return null
-    if (i.isEntity) {
-      const entity = instance[i.name]
-      const newObject = Object.keys(entity).reduce((acc, key) => {
-        if (entity[key] === null || entity[key] === undefined) return acc
+  isNotNullOrUndefined(field, instance) {
+    if (instance[field.name] === null || instance[field.name] === undefined) return false
+    return true
+  }
 
-        acc[key] = entity[key]
+  transformField(field, instance) {
+    if (field.isEntity) {
+      const entityToFilter = instance[field.name]
+      const parsedEntity = Object.keys(entityToFilter).reduce((acc, key) => {
+        if (entityToFilter[key] === null || entityToFilter[key] === undefined) return acc
+
+        acc[key] = entityToFilter[key]
 
         return acc
       }, {})
 
-      return { [i.nameDb]: newObject }
+      return { [field.nameDb]: parsedEntity }
     }
-    return { [i.nameDb]: instance[i.name] }
+    return { [field.nameDb]: instance[field.name] }
   }
 
   collectionFieldsWithValue(instance) {
 
     let collectionFields = this.allFields
-      .map(i => this.filterNullAndUndefined(i, instance))
-      .filter(Boolean)
-      .reduce((x, y) => ({ ...x, ...y }))
+      .filter((field) => this.isNotNullOrUndefined(field, instance))
+      .map((field) => this.transformField(field, instance))
+      .reduce((acc, current) => ({ ...acc, ...current }), {})
 
     if (instance.id === undefined) {
       delete instance.id
