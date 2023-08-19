@@ -68,18 +68,21 @@ class DataMapper {
 
   transformField(field, instance) {
     if (field.isEntity) {
-      const entityToFilter = instance[field.name]
-      const parsedEntity = Object.keys(entityToFilter).reduce((acc, key) => {
-        if (entityToFilter[key] === null || entityToFilter[key] === undefined) return acc
-
-        acc[key] = entityToFilter[key]
-
-        return acc
-      }, {})
-
-      return { [field.nameDb]: parsedEntity }
+      return { [field.nameDb]: this.parseEntity(instance[field.name]) }
     }
     return { [field.nameDb]: instance[field.name] }
+  }
+
+  parseEntity(value) {
+    const parsedEntity = Object.keys(value).reduce((acc, key) => {
+      if (value[key] === null || value[key] === undefined) return acc
+
+      acc[key] = value[key]
+
+      return acc
+    }, {})
+
+    return parsedEntity
   }
 
   collectionFieldsWithValue(instance) {
