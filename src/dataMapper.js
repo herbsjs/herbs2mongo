@@ -44,14 +44,11 @@ class DataMapper {
         const isID = entityIDs.includes(field)
 
         const object = { name: field, type, isEntity, nameDb, isArray, isID }
-  
-        if(isEntity && !isArray) {
-          const entitySchema = schema[field].type.prototype.meta.schema
-          object.children = this.buildAllFields(entitySchema, [], convention)
-        }
 
-        if (isEntity && isArray) {
-          const entitySchema = schema[field].type[0].prototype.meta.schema
+        if(isEntity) {
+          const entitySchema = isArray
+            ? schema[field].type[0].prototype.meta.schema
+            : schema[field].type.prototype.meta.schema
           object.children = this.buildAllFields(entitySchema, [], convention)
         }
         
