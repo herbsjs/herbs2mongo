@@ -110,14 +110,20 @@ describe('Data Mapper', () => {
             greatGreatGrandChild: field([GreatGreatGrandChildEntity])
         })
 
+        const CousinEntity = entity('Cousin entity', {
+            greatGrandChildEntity: field(GreatGrandChildEntity)
+        })
+
         const GrandChildEntity = entity('Grand Child entity', {
-            greatGrandChild: field(GreatGrandChildEntity)
+            greatGrandChild: field(GreatGrandChildEntity),
+            cousin: field(CousinEntity)
         })
 
         const ChildEntity = entity('Child entity', {
             grandChild: field(GrandChildEntity),
             simpleString: field(String)
         })
+        
 
         const givenAnNestedEntity = () => {
 
@@ -161,8 +167,9 @@ describe('Data Mapper', () => {
                                 {
                                     simple_string: 'String'
                                 }
-                            ]
-                        }
+                            ],
+                            cousin: null
+                        },
                     },
                     simple_string: 'String'
                 },
@@ -227,7 +234,8 @@ describe('Data Mapper', () => {
                             {
                                 simpleString: 'String'
                             }
-                        ]
+                        ],
+                        cousin: null
                     }
                 },
                 simpleString: 'String'
