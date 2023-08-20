@@ -148,7 +148,7 @@ describe('Data Mapper', () => {
             childEntity.grandChild.greatGrandChild.simpleStringArray = ['String']
             childEntity.grandChild.greatGrandChild.simpleNumber = 1
             const greatGreatGrandChild = new GreatGreatGrandChildEntity()
-            greatGreatGrandChild.simpleString = 'String'
+            greatGreatGrandChild.simpleString = 'greatGreatGrandChildEntity'
             childEntity.grandChild.greatGrandChild.greatGreatGrandChild = [greatGreatGrandChild]
 
             //when
@@ -165,7 +165,7 @@ describe('Data Mapper', () => {
                             simple_number: 1,
                             great_great_grand_child: [
                                 {
-                                    simple_string: 'String'
+                                    simple_string: 'greatGreatGrandChildEntity'
                                 }
                             ],
                             cousin: null
@@ -184,7 +184,7 @@ describe('Data Mapper', () => {
                                 simple_number: 1,
                                 great_great_grand_child: [
                                     {
-                                        simple_string: 'String'
+                                        simple_string: 'greatGreatGrandChildEntity'
                                     }
                                 ]
                             }
