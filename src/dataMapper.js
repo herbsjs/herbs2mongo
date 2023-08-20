@@ -94,27 +94,25 @@ class DataMapper {
         acc[index] = curr
         return acc
       }, {})
-    }    
-
-    if(field.isEntity) {
-      const parsedEntity = Object.keys(value).reduce((acc, key) => {
-        if (value[key] === null || value[key] === undefined) return acc
-    
-          const childField = field.children.find((i) => i.name === key)
-  
-          if(childField?.isEntity) {
-            acc[childField.nameDb] = this.parseEntity(childField, value[key])
-
-            return acc
-          }
-  
-        acc[childField.nameDb] = value[key]
-  
-        return acc
-      }, {})
-
-      return parsedEntity
     }
+
+    const parsedEntity = Object.keys(value).reduce((acc, key) => {
+      if (value[key] === null || value[key] === undefined) return acc
+
+      const childField = field.children.find((i) => i.name === key)
+
+      if (childField?.isEntity) {
+        acc[childField.nameDb] = this.parseEntity(childField, value[key])
+
+        return acc
+      }
+
+      acc[childField.nameDb] = value[key]
+
+      return acc
+    }, {})
+
+    return parsedEntity
   }
 
   collectionFieldsWithValue(instance) {
