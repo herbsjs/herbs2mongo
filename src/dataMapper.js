@@ -115,8 +115,6 @@ class DataMapper {
 
       return parsedEntity
     }
-
-    return { [field.nameDb]: value }
   }
 
   collectionFieldsWithValue(instance) {
