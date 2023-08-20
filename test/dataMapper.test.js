@@ -98,8 +98,16 @@ describe('Data Mapper', () => {
     })
 
     describe('Simple Nested Entity', () => {
+        const GreatGrandChildEntity = entity('Great-Grand Child entity', {
+            simpleString: field(String)
+        })
+
+        const GrandChildEntity = entity('Grand Child entity', {
+            greatGrandChild: field(GreatGrandChildEntity)
+        })
+
         const ChildEntity = entity('Child entity', {
-            field1: field(String)
+            grandChild: field(GrandChildEntity)
         })
 
         const givenAnNestedEntity = () => {
@@ -118,17 +126,29 @@ describe('Data Mapper', () => {
             const entityIDs = ['idField']
             const dataMapper = new DataMapper(Entity, entityIDs)
             const childEntity = new ChildEntity()
-            childEntity.field1 = 'String'
+            childEntity.grandChild = new GrandChildEntity()
+            childEntity.grandChild.greatGrandChild = new GreatGrandChildEntity()
+            childEntity.grandChild.greatGrandChild.simpleString = 'String'
 
             //when
             const toEntity = dataMapper.toEntity({
                 id_field: 1,
                 field1: true,
                 child_entity: {
-                    field1: 'String'
+                    grand_child: {
+                        great_grand_child: {
+                            simple_string: 'String'
+                        }
+                    }
                 },
                 array_child_entity: [
-                    { field1: 'String' }
+                    {
+                        grand_child: {
+                            great_grand_child: {
+                                simple_string: 'String'
+                            }
+                        }
+                    }
                 ]
             })
 
@@ -165,11 +185,19 @@ describe('Data Mapper', () => {
             entityInstance.idField = 1
             entityInstance.field1 = true
             entityInstance.childEntity = {
-                field1: 'String'
+                grandChild: {
+                    greatGrandChild: {
+                        simpleString: 'String'
+                    }
+                }
             }
             entityInstance.arrayChildEntity = [
                 {
-                    field1: 'String'
+                    grandChild: {
+                        greatGrandChild: {
+                            simpleString: 'String'
+                        }
+                    }
                 }
             ]
             const entityIDs = ['idField']
@@ -183,10 +211,20 @@ describe('Data Mapper', () => {
                 id_field: 1,
                 field1: true,
                 child_entity: {
-                    field1: 'String'
+                    grand_child: {
+                        great_grand_child: {
+                            simple_string: 'String'
+                        }
+                    }
                 },
                 array_child_entity: {
-                    0: { field1: 'String' }
+                    0: {
+                        grand_child: {
+                            great_grand_child: {
+                                simple_string: 'String'
+                            }
+                        }
+                    }
                 }
             })
         })
