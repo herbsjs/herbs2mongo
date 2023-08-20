@@ -103,7 +103,7 @@ class DataMapper {
       const parsedEntity = Object.keys(value).reduce((acc, key) => {
         if (value[key] === null || value[key] === undefined) return acc
     
-          const childField = field?.children.find((i) => i.name === key)
+          const childField = field.children.find((i) => i.name === key)
   
           if(childField?.isEntity) {
             acc[childField.nameDb] = this.parseEntity(childField, value[key])
@@ -168,6 +168,32 @@ class DataMapper {
     const convention = this.convention
     const proxy = {}
 
+    function processEntity (field, payload) {
+      const entityValue = payload[field.nameDb]
+
+      if (checker.isEmpty(entityValue)) return undefined
+
+      const object = field.type.schema.fields.reduce((obj, entityField) => {
+        const fieldNameDb = convention.toCollectionFieldName(entityField.name)
+
+        const isEntity = entity.isEntity(entityField.type)
+
+        if(isEntity) {
+          const childField = field?.children.find((i) => i.name === entityField.name)
+          obj[entityField.name] = processEntity(childField, payload[field.nameDb])
+
+          return obj
+        }
+
+        const fieldParser = getDataParser(entityField.type, Array.isArray(entityField.type))
+
+        obj[entityField.name] = fieldParser(payload[field.nameDb][fieldNameDb])
+        return obj
+      }, {})
+
+      return object
+    }
+
     Object.defineProperty(proxy, '_payload', {
       enumerable: false,
       wricollection: true,
@@ -187,19 +213,7 @@ class DataMapper {
         enumerable: true,
         get: function () {
           if (field.isEntity && !field.isArray) {
-            const entity = this._payload[field.nameDb]
-
-            if (checker.isEmpty(entity)) return undefined
-
-            const object = field.type.schema.fields.reduce((obj, entityField) => {
-              const fieldNameDb = convention.toCollectionFieldName(entityField.name)
-              const fieldParser = getDataParser(entityField.type, Array.isArray(entityField.type))
-
-              obj[entityField.name] = fieldParser(this._payload[field.nameDb][fieldNameDb])
-              return obj
-            }, {})
-
-            return object
+            return processEntity(field, this._payload)
           }
           return parser(this._payload[nameDb])
         }
