@@ -98,8 +98,16 @@ describe('Data Mapper', () => {
     })
 
     describe('Simple Nested Entity', () => {
+        const GreatGreatGrandChildEntity = entity('Great-Grand Child entity', {
+            simpleString: field(String),
+            simpleBoolean: field(Boolean)
+        })
+
         const GreatGrandChildEntity = entity('Great-Grand Child entity', {
-            simpleString: field(String)
+            simpleString: field(String),
+            simpleNumber: field(Number),
+            simpleStringArray: field([String]),
+            greatGreatGrandChild: field([GreatGreatGrandChildEntity])
         })
 
         const GrandChildEntity = entity('Grand Child entity', {
@@ -131,6 +139,11 @@ describe('Data Mapper', () => {
             childEntity.simpleString = 'String'
             childEntity.grandChild.greatGrandChild = new GreatGrandChildEntity()
             childEntity.grandChild.greatGrandChild.simpleString = 'String'
+            childEntity.grandChild.greatGrandChild.simpleStringArray = ['String']
+            childEntity.grandChild.greatGrandChild.simpleNumber = 1
+            childEntity.grandChild.greatGrandChild.greatGreatGrandChild = [GreatGreatGrandChildEntity.fromJSON({
+                simpleString: 'String'
+            })]
 
             //when
             const toEntity = dataMapper.toEntity({
@@ -139,7 +152,16 @@ describe('Data Mapper', () => {
                 child_entity: {
                     grand_child: {
                         great_grand_child: {
-                            simple_string: 'String'
+                            simple_string: 'String',
+                            simple_string_array: [
+                                'String'
+                            ],
+                            simple_number: 1,
+                            great_great_grand_child: [
+                                {
+                                    simple_string: 'String'
+                                }
+                            ]
                         }
                     },
                     simple_string: 'String'
@@ -148,7 +170,16 @@ describe('Data Mapper', () => {
                     {
                         grand_child: {
                             great_grand_child: {
-                                simple_string: 'String'
+                                simple_string: 'String',
+                                simple_string_array: [
+                                    'String'
+                                ],
+                                simple_number: 1,
+                                great_great_grand_child: [
+                                    {
+                                        simple_string: 'String'
+                                    }
+                                ]
                             }
                         },
                         simple_string: 'String'
@@ -191,7 +222,12 @@ describe('Data Mapper', () => {
             entityInstance.childEntity = {
                 grandChild: {
                     greatGrandChild: {
-                        simpleString: 'String'
+                        simpleString: 'String',
+                        greatGreatGrandChild: [
+                            {
+                                simpleString: 'String'
+                            }
+                        ]
                     }
                 },
                 simpleString: 'String'
@@ -219,7 +255,12 @@ describe('Data Mapper', () => {
                 child_entity: {
                     grand_child: {
                         great_grand_child: {
-                            simple_string: 'String'
+                            simple_string: 'String',
+                            great_great_grand_child: {
+                                '0': {
+                                    simple_string: 'String'
+                                }
+                            }
                         }
                     },
                     simple_string: 'String'
