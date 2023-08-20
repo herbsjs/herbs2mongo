@@ -98,7 +98,7 @@ describe('Data Mapper', () => {
     })
 
     describe('Simple Nested Entity', () => {
-        const GreatGreatGrandChildEntity = entity('Great-Grand Child entity', {
+        const GreatGreatGrandChildEntity = entity('Great Great-Grand Child entity', {
             simpleString: field(String),
             simpleBoolean: field(Boolean)
         })

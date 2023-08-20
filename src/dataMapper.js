@@ -192,7 +192,11 @@ class DataMapper {
       const object = field.type.schema.fields.reduce((obj, entityField) => {
         const fieldNameDb = convention.toCollectionFieldName(entityField.name)
 
-        const isEntity = entity.isEntity(entityField.type)
+        const typeIsArray = checker.isArray(entityField.type)
+
+        const isEntity = typeIsArray
+          ? entity.isEntity(entityField.type[0])
+          : entity.isEntity(entityField.type)
 
         if (isEntity) {
           const childField = field?.children.find((i) => i.name === entityField.name)
