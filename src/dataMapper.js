@@ -45,13 +45,13 @@ class DataMapper {
 
         const object = { name: field, type, isEntity, nameDb, isArray, isID }
 
-        if(isEntity) {
+        if (isEntity) {
           const entitySchema = isArray
             ? schema[field].type[0].prototype.meta.schema
             : schema[field].type.prototype.meta.schema
           object.children = this.buildAllFields(entitySchema, [], convention)
         }
-        
+
         return object
       })
       .filter(Boolean)
@@ -152,14 +152,14 @@ class DataMapper {
         return (value) => arrayDataParser(value, parser)
       }
 
-      if(isArrayOfEntities) {
+      if (isArrayOfEntities) {
         return (value) => {
           if (checker.isEmpty(value)) return null
           return value?.map((item) => {
             const object = Object.keys(item).reduce((obj, key) => {
               const childField = field?.children.find((i) => i.nameDb === key)
 
-              if(childField.isEntity) {
+              if (childField.isEntity) {
                 obj[childField.name] = processEntity(childField, item)
 
                 return obj
@@ -184,7 +184,7 @@ class DataMapper {
     const convention = this.convention
     const proxy = {}
 
-    function processEntity (field, payload) {
+    function processEntity(field, payload) {
       const entityValue = payload[field.nameDb]
 
       if (checker.isEmpty(entityValue)) return undefined
@@ -194,10 +194,10 @@ class DataMapper {
 
         const isEntity = entity.isEntity(entityField.type)
 
-        if(isEntity) {
+        if (isEntity) {
           const childField = field?.children.find((i) => i.name === entityField.name)
 
-          if(childField.isArray) {
+          if (childField.isArray) {
             const arrayOfEntityParser = getDataParser(childField.type, childField.isArray, childField.isEntity, childField)
             obj[entityField.name] = arrayOfEntityParser(payload[field.nameDb][fieldNameDb])
 
@@ -240,7 +240,7 @@ class DataMapper {
             return processEntity(field, this._payload)
           }
 
-          if(field.isEntity && field.isArray) {
+          if (field.isEntity && field.isArray) {
             const arrayOfEntityParser = getDataParser(field.type, field.isArray, field.isEntity, field)
             return arrayOfEntityParser(this._payload[nameDb])
           }
