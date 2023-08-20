@@ -8,34 +8,48 @@ let client = {}
 
 describe('Query Find by ID', () => {
 
-  const collection = 'test_repository'
-  const database = 'herbs2mongo_testdb'
+    const collection = 'test_repository'
+    const database = 'herbs2mongo_testdb'
 
     before(async () => {
 
-      client = await connection()
+        client = await connection()
 
-      await client.dropDatabase()
+        await client.dropDatabase()
 
-      await client.createCollection(collection)
+        await client.createCollection(collection)
 
-      await client.collection(collection).insertOne({ _id: new ObjectId("60edc25fc39277307ca9a7ff"), number_test: 100, boolean_test: true, string_test: 'aString' })
-      await client.collection(collection).insertOne({ _id: new ObjectId("70edc25fc39277307ca9a700"), number_test: 200, boolean_test: false })
-      await client.collection(collection).insertOne({ _id: new ObjectId("80edd25fc39272307ca9a712"), number_test: 300, boolean_test: false })
-      await client.collection(collection).insertOne({
-          _id: new ObjectId("64acbc1ba6a28fbd4501c25c"),
-          number_test: 400,
-          boolean_test: true,
-          string_test: "aString",
-          child_entity: {
-              number_test: 100, boolean_test: true, string_test: 'aString'
-          }
-      })
+        await client.collection(collection).insertOne({ _id: new ObjectId("60edc25fc39277307ca9a7ff"), number_test: 100, boolean_test: true, string_test: 'aString' })
+        await client.collection(collection).insertOne({ _id: new ObjectId("70edc25fc39277307ca9a700"), number_test: 200, boolean_test: false })
+        await client.collection(collection).insertOne({ _id: new ObjectId("80edd25fc39272307ca9a712"), number_test: 300, boolean_test: false })
+        await client.collection(collection).insertOne({
+            _id: new ObjectId("64acbc1ba6a28fbd4501c25c"),
+            number_test: 400,
+            boolean_test: true,
+            string_test: "aString",
+            child_entity: {
+                number_test: 100,
+                boolean_test: true,
+                string_test: 'aString',
+                grand_child_test: {
+                    number_test: 100,
+                    boolean_test: true,
+                    string_test: 'aString',
+                    array_entities_test: [
+                        {
+                            number_test: 100,
+                            boolean_test: true,
+                            string_test: 'aString',
+                        }
+                    ]
+                }
+            }
+        })
     })
 
     after(async () => {
 
-      await client.dropDatabase()
+        await client.dropDatabase()
 
     })
 
@@ -47,11 +61,26 @@ describe('Query Find by ID', () => {
         }
     }
 
+    const GreatGrandChildEntity = entity('Great-Grand child entity', {
+        numberTest: field(Number),
+        stringTest: field(String),
+        booleanTest: field(Boolean),
+    })
+
+    const GrandChildEntity = entity('Grand child entity', {
+        numberTest: field(Number),
+        stringTest: field(String),
+        booleanTest: field(Boolean),
+        arrayTest: field([String]),
+        arrayEntitiesTest: field([GreatGrandChildEntity])
+    })
+
     const ChildEntity = entity('Child entity', {
         numberTest: field(Number),
         stringTest: field(String),
         booleanTest: field(Boolean),
-        arrayTest: field([String])
+        arrayTest: field([String]),
+        grandChildTest: field(GrandChildEntity)
     })
 
     const givenAnEntity = () => {
@@ -110,7 +139,19 @@ describe('Query Find by ID', () => {
             booleanTest: true,
             stringTest: "aString",
             childEntity: {
-                numberTest: 100, booleanTest: true, stringTest: 'aString', arrayTest: null,
+                numberTest: 100, booleanTest: true, stringTest: 'aString', arrayTest: null, grandChildTest: {
+                    numberTest: 100,
+                    booleanTest: true,
+                    stringTest: 'aString',
+                    arrayTest: null,
+                    arrayEntitiesTest: [
+                        {
+                            numberTest: 100,
+                            booleanTest: true,
+                            stringTest: 'aString'
+                        }
+                    ]
+                }
             }
         })
         assert.deepStrictEqual(ret[0].isValid(), true)
