@@ -143,7 +143,7 @@ class DataMapper {
 
   buildProxy() {
 
-    function getDataParser(type, isArray) {
+    function getDataParser(type, isArray, isArrayOfEntities, field) {
       function arrayDataParser(value, parser) {
         if (checker.isEmpty(value)) return null
         return value.map((i) => parser(i))
@@ -154,9 +154,19 @@ class DataMapper {
         return parser(value)
       }
 
-      if (isArray) {
+      if (isArray && !isArrayOfEntities) {
         const parser = getDataParser(type, false)
         return (value) => arrayDataParser(value, parser)
+      }
+
+      if(isArrayOfEntities) {
+        return (value) => {
+          if (checker.isEmpty(value)) return null
+          return value?.map((i) => { return {
+              [field.children[0].name]: processEntity(field.children[0], i)
+            }
+          })
+        }
       }
 
       if ((type === Date) || (!convention.isScalarType(type)))
@@ -215,6 +225,12 @@ class DataMapper {
           if (field.isEntity && !field.isArray) {
             return processEntity(field, this._payload)
           }
+
+          if(field.isEntity && field.isArray) {
+            const arrayOfEntityParser = getDataParser(field.type, field.isArray, field.isEntity, field)
+            return arrayOfEntityParser(this._payload[nameDb])
+          }
+
           return parser(this._payload[nameDb])
         }
       })
