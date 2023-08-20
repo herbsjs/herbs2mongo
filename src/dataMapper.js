@@ -162,9 +162,22 @@ class DataMapper {
       if(isArrayOfEntities) {
         return (value) => {
           if (checker.isEmpty(value)) return null
-          return value?.map((i) => { return {
-              [field.children[0].name]: processEntity(field.children[0], i)
-            }
+          return value?.map((item) => {
+            const object = Object.keys(item).reduce((obj, key) => {
+              const childField = field?.children.find((i) => i.nameDb === key)
+
+              if(childField.isEntity) {
+                obj[childField.name] = processEntity(childField, item)
+
+                return obj
+              }
+
+              const parser = getDataParser(field.type, false)
+              obj[childField.name] = parser(item[childField.nameDb])
+
+              return obj
+            }, {})
+            return object
           })
         }
       }
@@ -190,6 +203,14 @@ class DataMapper {
 
         if(isEntity) {
           const childField = field?.children.find((i) => i.name === entityField.name)
+
+          if(childField.isArray) {
+            const arrayOfEntityParser = getDataParser(childField.type, childField.isArray, childField.isEntity, childField)
+            obj[entityField.name] = arrayOfEntityParser(payload[field.nameDb][fieldNameDb])
+
+            return obj
+          }
+
           obj[entityField.name] = processEntity(childField, payload[field.nameDb])
 
           return obj
