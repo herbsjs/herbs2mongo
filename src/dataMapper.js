@@ -34,14 +34,30 @@ class DataMapper {
 
     const fields = Object.keys(schema)
       .map((field) => {
-        if (typeof schema[field] === 'function') return { type: Function }
+        if (typeof schema[field] === 'function') return null
+
         const isArray = Array.isArray(schema[field].type)
         const type = fieldType(schema[field].type)
         const isEntity = entity.isEntity(type)
         const nameDb = convention.toCollectionFieldName(field)
+
         const isID = entityIDs.includes(field)
-        return { name: field, type, isEntity, nameDb, isArray, isID }
+
+        const object = { name: field, type, isEntity, nameDb, isArray, isID }
+  
+        if(isEntity && !isArray) {
+          const entitySchema = schema[field].type.prototype.meta.schema
+          object.children = this.buildAllFields(entitySchema, [], convention)
+        }
+
+        if (isEntity && isArray) {
+          const entitySchema = schema[field].type[0].prototype.meta.schema
+          object.children = this.buildAllFields(entitySchema, [], convention)
+        }
+        
+        return object
       })
+      .filter(Boolean)
 
     const allFields = fields.filter((f) => f.type !== Function)
 
