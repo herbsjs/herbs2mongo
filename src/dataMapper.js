@@ -84,21 +84,42 @@ class DataMapper {
 
   transformField(field, instance) {
     if (field.isEntity) {
-      return { [field.nameDb]: this.parseEntity(instance[field.name]) }
+      return { [field.nameDb]: this.parseEntity(field, instance[field.name]) }
     }
+
     return { [field.nameDb]: instance[field.name] }
   }
 
-  parseEntity(value) {
-    const parsedEntity = Object.keys(value).reduce((acc, key) => {
-      if (value[key] === null || value[key] === undefined) return acc
+  parseEntity(field, value) {
+    if (field.isArray && checker.isArray(value)) {
+      const parsedArray = value.map(item => this.parseEntity(field, item))
+      return parsedArray.reduce((acc, curr, index) => {
+        acc[index] = curr
+        return acc
+      }, {})
+    }    
 
-      acc[key] = value[key]
+    if(field.isEntity) {
+      const parsedEntity = Object.keys(value).reduce((acc, key) => {
+        if (value[key] === null || value[key] === undefined) return acc
+    
+          const childField = field?.children.find((i) => i.name === key)
+  
+          if(childField?.isEntity) {
+            acc[childField.nameDb] = this.parseEntity(childField, value[key])
 
-      return acc
-    }, {})
+            return acc
+          }
+  
+        acc[childField.nameDb] = value[key]
+  
+        return acc
+      }, {})
 
-    return parsedEntity
+      return parsedEntity
+    }
+
+    return { [field.nameDb]: value }
   }
 
   collectionFieldsWithValue(instance) {
