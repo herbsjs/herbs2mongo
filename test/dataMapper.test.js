@@ -147,9 +147,9 @@ describe('Data Mapper', () => {
             childEntity.grandChild.greatGrandChild.simpleString = 'String'
             childEntity.grandChild.greatGrandChild.simpleStringArray = ['String']
             childEntity.grandChild.greatGrandChild.simpleNumber = 1
-            childEntity.grandChild.greatGrandChild.greatGreatGrandChild = [GreatGreatGrandChildEntity.fromJSON({
-                simpleString: 'String'
-            })]
+            const greatGreatGrandChild = new GreatGreatGrandChildEntity()
+            greatGreatGrandChild.simpleString = 'String'
+            childEntity.grandChild.greatGrandChild.greatGreatGrandChild = [greatGreatGrandChild]
 
             //when
             const toEntity = dataMapper.toEntity({
