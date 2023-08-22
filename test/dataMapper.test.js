@@ -38,7 +38,6 @@ describe('Data Mapper', () => {
             assert.deepStrictEqual(toEntity.idField, 1)
             assert.deepStrictEqual(toEntity.field1, true)
             assert.deepStrictEqual(toEntity.fieldName, false)
-
         })
 
         it('should convert an entity field to the collection string convetion', () => {
@@ -95,6 +94,213 @@ describe('Data Mapper', () => {
 
             //then
             assert.deepStrictEqual(toEntity, { id_field: 1, field1: true, field_name: false })
+        })
+    })
+
+    describe('Simple Nested Entity', () => {
+        const GreatGreatGrandChildEntity = entity('Great Great-Grand Child entity', {
+            simpleString: field(String),
+            simpleBoolean: field(Boolean)
+        })
+
+        const GreatGrandChildEntity = entity('Great-Grand Child entity', {
+            simpleString: field(String),
+            simpleNumber: field(Number),
+            simpleStringArray: field([String]),
+            greatGreatGrandChild: field([GreatGreatGrandChildEntity])
+        })
+
+        const CousinEntity = entity('Cousin entity', {
+            greatGrandChildEntity: field(GreatGrandChildEntity)
+        })
+
+        const GrandChildEntity = entity('Grand Child entity', {
+            greatGrandChild: field(GreatGrandChildEntity),
+            cousin: field(CousinEntity)
+        })
+
+        const ChildEntity = entity('Child entity', {
+            grandChild: field(GrandChildEntity),
+            simpleString: field(String)
+        })
+        
+
+        const givenAnNestedEntity = () => {
+
+            return entity('A nested entity', {
+                idField: field(Number),
+                field1: field(Boolean),
+                childEntity: field(ChildEntity),
+                arrayChildEntity: field([ChildEntity])
+            })
+        }
+
+        it('should convert data from collection to nested entity', () => {
+            //given
+            const Entity = givenAnNestedEntity()
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+            const childEntity = new ChildEntity()
+            childEntity.grandChild = new GrandChildEntity()
+            childEntity.simpleString = 'String'
+            childEntity.grandChild.greatGrandChild = new GreatGrandChildEntity()
+            childEntity.grandChild.greatGrandChild.simpleString = 'String'
+            childEntity.grandChild.greatGrandChild.simpleStringArray = ['String']
+            childEntity.grandChild.greatGrandChild.simpleNumber = 1
+            const greatGreatGrandChild = new GreatGreatGrandChildEntity()
+            greatGreatGrandChild.simpleString = 'greatGreatGrandChildEntity'
+            childEntity.grandChild.greatGrandChild.greatGreatGrandChild = [greatGreatGrandChild]
+
+            //when
+            const toEntity = dataMapper.toEntity({
+                id_field: 1,
+                field1: true,
+                child_entity: {
+                    grand_child: {
+                        great_grand_child: {
+                            simple_string: 'String',
+                            simple_string_array: [
+                                'String'
+                            ],
+                            simple_number: 1,
+                            great_great_grand_child: [
+                                {
+                                    simple_string: 'greatGreatGrandChildEntity'
+                                }
+                            ],
+                            cousin: null
+                        },
+                    },
+                    simple_string: 'String'
+                },
+                array_child_entity: [
+                    {
+                        grand_child: {
+                            great_grand_child: {
+                                simple_string: 'String',
+                                simple_string_array: [
+                                    'String'
+                                ],
+                                simple_number: 1,
+                                great_great_grand_child: [
+                                    {
+                                        simple_string: 'greatGreatGrandChildEntity'
+                                    }
+                                ]
+                            }
+                        },
+                        simple_string: 'String'
+                    }
+                ]
+            })
+
+            //then
+            assert.deepStrictEqual(toEntity.idField, 1)
+            assert.deepStrictEqual(toEntity.field1, true)
+            assert.deepStrictEqual(toEntity.childEntity, childEntity)
+            assert.deepStrictEqual(toEntity.arrayChildEntity, [childEntity])
+        })
+
+        it('should retrieve collection fields an nested entity', () => {
+            //given
+            const Entity = givenAnNestedEntity()
+            const entityInstance = new Entity()
+            entityInstance.idField = 1
+            entityInstance.field1 = true
+            entityInstance.childEntity = {
+                field1: 'String'
+            }
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+
+            //when
+            const toEntity = dataMapper.collectionFields()
+
+            //then
+            assert.deepStrictEqual(toEntity, ['id_field', 'field1', 'child_entity', 'array_child_entity'])
+        })
+
+        it('should retrieve collection fields with values of an nested entity', () => {
+            //given
+            const Entity = givenAnNestedEntity()
+            const entityInstance = new Entity()
+            entityInstance.idField = 1
+            entityInstance.field1 = true
+            entityInstance.childEntity = {
+                grandChild: {
+                    greatGrandChild: {
+                        simpleString: 'String',
+                        greatGreatGrandChild: [
+                            {
+                                simpleString: 'String'
+                            }
+                        ],
+                        cousin: null
+                    }
+                },
+                simpleString: 'String'
+            }
+            entityInstance.arrayChildEntity = [
+                {
+                    grandChild: {
+                        greatGrandChild: {
+                            simpleString: 'String'
+                        }
+                    },
+                    simpleString: 'String'
+                }
+            ]
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+
+            //when
+            const toEntity = dataMapper.collectionFieldsWithValue(entityInstance)
+
+            //then
+            assert.deepStrictEqual(toEntity, {
+                id_field: 1,
+                field1: true,
+                child_entity: {
+                    grand_child: {
+                        great_grand_child: {
+                            simple_string: 'String',
+                            great_great_grand_child: {
+                                '0': {
+                                    simple_string: 'String'
+                                }
+                            }
+                        }
+                    },
+                    simple_string: 'String'
+                },
+                array_child_entity: {
+                    0: {
+                        grand_child: {
+                            great_grand_child: {
+                                simple_string: 'String'
+                            }
+                        },
+                        simple_string: 'String'
+                    }
+                }
+            })
+        })
+
+        it('should retrieve collection fields with values of an nested entity with child entity as empty object', () => {
+            //given
+            const Entity = givenAnNestedEntity()
+            const entityInstance = new Entity()
+            entityInstance.idField = 1
+            entityInstance.field1 = true
+            entityInstance.childEntity = {}
+            const entityIDs = ['idField']
+            const dataMapper = new DataMapper(Entity, entityIDs)
+
+            //when
+            const toEntity = dataMapper.collectionFieldsWithValue(entityInstance)
+
+            //then
+            assert.deepStrictEqual(toEntity, { id_field: 1, field1: true, child_entity: {} })
         })
     })
 
