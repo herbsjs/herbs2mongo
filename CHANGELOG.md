@@ -1,3 +1,24 @@
+# [4.1.0](https://github.com/herbsjs/herbs2mongo/compare/v4.0.0...v4.1.0) (2023-08-22)
+
+
+### Bug Fixes
+
+* **datamapper:** improved empty object checking in arrayDataParse ([2453cb7](https://github.com/herbsjs/herbs2mongo/commit/2453cb72df917923f8ca668f1fe40890e8c0c2dc))
+
+
+### Features
+
+* adjust entity checking when entityField.type is an array ([1122dd1](https://github.com/herbsjs/herbs2mongo/commit/1122dd1623d94d53a1607b76ef914d36cb783ff2))
+* adjust nested entity array compatibility ([9830cdc](https://github.com/herbsjs/herbs2mongo/commit/9830cdcd63de73dd4986f1261a4ce7b02c7d4f26))
+* **datamapper:** add recursive entity array parser ([b56dd30](https://github.com/herbsjs/herbs2mongo/commit/b56dd30b468bc9c8fc378129ca086745a8389106))
+* **datamapper:** adds recursion and childrenm key in field mapping ([6190f0b](https://github.com/herbsjs/herbs2mongo/commit/6190f0bc86ebc3c5293b5c5d8311c2f295726a8a))
+* **datamapper:** adds recursion to work with nested entities ([6418b2b](https://github.com/herbsjs/herbs2mongo/commit/6418b2b10a393e6c04c08e195a5fe85526eb43a4))
+* **datamapper:** enable find of nested entities ([4f460ae](https://github.com/herbsjs/herbs2mongo/commit/4f460aed4295659494dc8bcf97106600b63165b4))
+* **datamapper:** enable find of nested entities ([68dfcf0](https://github.com/herbsjs/herbs2mongo/commit/68dfcf031812f65989f71a8b8aad46f2778abd3b))
+* **datamapper:** enabling nested entity saving with improved null and undefined handling ([d62cb04](https://github.com/herbsjs/herbs2mongo/commit/d62cb04653e6e76a567df3eb100507654aab546e))
+* **datamapper:** recursive parse of entities from collection to entity ([636c9ab](https://github.com/herbsjs/herbs2mongo/commit/636c9abf1d91559c1c90446b8391946c8c47a6c7))
+* **herbs2mongo:** enable export of DataMapper class ([e34049e](https://github.com/herbsjs/herbs2mongo/commit/e34049e124aee6b660b28574d530cb3bdf29eed4))
+
 # [4.0.0](https://github.com/herbsjs/herbs2mongo/compare/v3.0.3...v4.0.0) (2023-03-07)
 
 
