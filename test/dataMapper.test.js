@@ -320,16 +320,16 @@ describe('Data Mapper', () => {
                 dateTest: field(Date),
                 objectTest: field(Object),
                 entityTest: field(ParentEntity),
-                // TODO
-                // arrayTest: field(Array),
+                arrayTest: field([Object]),
                 numbersTest: field([Number]),
                 stringsTest: field([String]),
                 booleansTest: field([Boolean]),
                 datesTest: field([Date]),
                 objectsTest: field([Object]),
-                // arraysTest:field([Array]),
                 entitiesTest: field([ParentEntity]),
                 functionTest() { return 1 }
+                // TODO
+                // arraysTest:field([Array]),
             })
         }
 
@@ -344,13 +344,13 @@ describe('Data Mapper', () => {
                 ['boolean_test', 'booleanTest', true],
                 ['date_test', 'dateTest', new Date()],
                 ['object_test', 'objectTest', { x: 1 }],
-                // TODO
-                // ['array_test', 'arrayTest', [1]]
+                ['array_test', 'arrayTest', [{}]],
                 ['numbers_test', 'numbersTest', [1, 2]],
                 ['strings_test', 'stringsTest', ["s1", "s2"]],
                 ['booleans_test', 'booleansTest', [true, false]],
                 ['dates_test', 'datesTest', [new Date(), new Date()]],
                 ['objects_test', 'objectsTest', [{ x: 1 }, { y: 2 }]],
+                // TODO
                 // ['arrays_test', 'arraysTest', [[1]]]
             ]
 
@@ -363,7 +363,6 @@ describe('Data Mapper', () => {
             samples.map(i => {
                 assert.deepStrictEqual(toEntity[i[1]], i[2])
             })
-
         })
 
         it('should return null from collection to entity', () => {
@@ -377,13 +376,13 @@ describe('Data Mapper', () => {
                 ['boolean_test', 'booleanTest', null],
                 ['date_test', 'dateTest', null],
                 ['object_test', 'objectTest', null],
-                // TODO
-                // ['array_test', 'arrayTest', [null]]
+                ['array_test', 'arrayTest', null],
                 ['numbers_test', 'numbersTest', null],
                 ['strings_test', 'stringsTest', [null, null]],
                 ['booleans_test', 'booleansTest', [null, null]],
                 ['dates_test', 'datesTest', [null, null]],
                 ['objects_test', 'objectsTest', [null, null]],
+                // TODO
                 // ['arrays_test', 'arraysTest', [[null]]]
             ]
 
@@ -396,7 +395,43 @@ describe('Data Mapper', () => {
             samples.map(i => {
                 assert.deepStrictEqual(toEntity[i[1]], i[2])
             })
+        })
 
+        it('should return undefined from collection to entity', () => {
+            //given
+            const Entity = givenAnComplexEntity()
+            const samples = [
+                // TODO
+                // ['string_test', 'stringTest', undefined],
+                // ['strings_test', 'stringsTest', [undefined, undefined]],
+                // ['arrays_test', 'arraysTest', [[null]]]
+                ['date_test', 'dateTest', undefined],
+                ['array_test', 'arrayTest', undefined],
+                ['numbers_test', 'numbersTest', undefined],
+                ['dates_test', 'datesTest', [undefined, undefined]],
+            ]
+
+            //when
+            const dataMapper = new DataMapper(Entity)
+            const data = samples.map(i => { return { [i[0]]: i[2] } }).reduce((obj, i) => Object.assign(obj, i))
+            const toEntity = dataMapper.toEntity(data)
+
+            //then
+            samples.map(i => {
+                assert.deepStrictEqual(toEntity[i[1]], i[2])
+            })
+        })
+
+        it('should empty array when array is empty in collection', () => {
+            //given
+            const Entity = givenAnComplexEntity()
+
+            //when
+            const dataMapper = new DataMapper(Entity)
+            const toEntity = dataMapper.toEntity({ array_test: [] })
+
+            //then
+            assert.deepStrictEqual(toEntity.arrayTest, [])
         })
     })
 })
