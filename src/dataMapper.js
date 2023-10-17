@@ -138,7 +138,7 @@ class DataMapper {
 
     function getDataParser(type, isArray, isArrayOfEntities, field) {
       function arrayDataParser(value, parser) {
-        if (checker.isEmpty(value)) return null
+        if (checker.isEmpty(value)) return value
         return value.map((i) => parser(i))
       }
 
